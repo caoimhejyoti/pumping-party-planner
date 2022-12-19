@@ -16,6 +16,6 @@ Then I recieve a list of the appropirate cocktail/music to mach my original pref
 ```
 
 ### APIs:
-https://www.thecocktaildb.com/api.php
-Music: Deezer? Spotify? undecided
+Cocktails: https://www.thecocktaildb.com/api.php
+Music: https://developers.deezer.com/api
 
