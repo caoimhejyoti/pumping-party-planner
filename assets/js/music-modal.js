@@ -8,7 +8,6 @@ let musicModal = document.querySelector('#music-modal');
 //button variables
 let selectMusicBtnEl = document.querySelector(".music-select");
 console.log(selectMusicBtnEl);
-let selectCocktailBtnEl = document.querySelector(".cocktail-select");
 
 // Function - brings up music modal dialog TODO: add next function trigger
 let musicSelectionFnc = function(){

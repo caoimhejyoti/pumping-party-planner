@@ -1,6 +1,5 @@
 // global variables
     //button variables
-    let selectMusicBtnEl = document.querySelector(".music-select");
     let selectCocktailBtnEl = document.querySelector(".cocktail-select");
     console.log(selectCocktailBtnEl);
     let cocktailModalEl = document.querySelector("#cocktail-modal");
@@ -23,3 +22,5 @@ function openModal() {
 selectCocktailBtnEl.addEventListener("click", openModal);
 
     //btn.addEventListener("click", openModel);
+
+console.log("this");
