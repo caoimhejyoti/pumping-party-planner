@@ -22,7 +22,7 @@ body {
     padding: 10px;
     background: linear-gradient(45deg, red, blue);
     border-radius: 30px;
-    transition: width 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }
 
 .playpause {
