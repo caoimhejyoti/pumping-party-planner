@@ -1,5 +1,115 @@
-.card {
-    width: 30%;
-    min-height: 50%;
-    padding: 2rem;
+body {
+    background: black;
+    overflow: hidden;
 }
+.card {
+    min-width: 100%;
+    min-height: 90%;
+    padding: 2rem;
+    background: white;
+}
+
+.border-gradient:hover {
+    transform: scale(1.1); 
+
+}
+
+.border-gradient {
+    min-width: 20%;
+    max-width: 300px;
+    min-height: 50%;
+    max-height: 50%;
+    padding: 10px;
+    background: linear-gradient(45deg, red, blue);
+    border-radius: 30px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.playpause {
+    transition: width 0.3s ease-in-out, margin 0.3s ease-in-out;
+}
+
+.playpause:hover {
+    width: 100px;
+    margin: 30px;
+}
+
+@keyframes rgb {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 0 100;
+    }
+    50% {
+        background-position: 100 100;
+    }
+    75% {
+        background-position: 100 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+h1 {
+    animation: text-shadow 1.5s ease-in-out infinite;
+    font-size: 5em;
+    font-weight: 900;
+    line-height: 1;
+}
+
+@keyframes text-shadow {
+    0% {  
+        transform: translateY(0);
+        text-shadow: 
+            0 0 0 #0c2ffb, 
+            0 0 0 #2cfcfd, 
+            0 0 0 #fb203b, 
+            0 0 0 #fefc4b;
+    }
+
+    20% {  
+        transform: translateY(-1em);
+        text-shadow: 
+            0 0.125em 0 #0c2ffb, 
+            0 0.25em 0 #2cfcfd, 
+            0 -0.125em 0 #fb203b, 
+            0 -0.25em 0 #fefc4b;
+    }
+
+    40% {  
+        transform: translateY(0.5em);
+        text-shadow: 
+            0 -0.0625em 0 #0c2ffb, 
+            0 -0.125em 0 #2cfcfd, 
+            0 0.0625em 0 #fb203b, 
+            0 0.125em 0 #fefc4b;
+    }
+    
+   60% {
+        transform: translateY(-0.25em);
+        text-shadow: 
+            0 0.03125em 0 #0c2ffb, 
+            0 0.0625em 0 #2cfcfd, 
+            0 -0.03125em 0 #fb203b, 
+            0 -0.0625em 0 #fefc4b;
+    }
+
+    80% {  
+        transform: translateY(0);
+        text-shadow: 
+            0 0 0 #0c2ffb, 
+            0 0 0 #2cfcfd, 
+            0 0 0 #fb203b, 
+            0 0 0 #fefc4b;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+}
+    

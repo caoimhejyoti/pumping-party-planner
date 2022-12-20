@@ -7,21 +7,25 @@
         <link rel="stylesheet" href="./assets/css/style.css">
     </head>
     <body>
-        <nav class="fixed left-1/2 navbar">
-            <h1 class="text-6xl font-extrabold">Pumping Party Planner</h1>
+        <nav>
+            <h1 class="pt-20 text-white title text-6xl text-center font-extrabold">Pumping Party Planner</h1>
         </nav>
-        <section class="flex justify-center w-screen m-auto h-screen items-center">
-            <section class="music-select card font-bold border-8 rounded-3xl mr-10" role = "button">
-                <h2 class="text-4xl bg-slate-400">Select your Music</h2>
-                <img src="./assets/imgs/music.jpg">
-            </section>
-            <section class="cocktail-select card font-bold border-8 rounded-3xl ml-10" role = "button" >
-                <h2 class="text-4xl">Select your Cocktails</h2>
-                <img src="./assets/imgs/cocktail.jpg">
-            </section>
+        <section class="fixed flex justify-center w-screen h-screen items-center">
+            <div class="flex border-gradient mr-10">
+                <section class="music-select card object-fill font-bold border rounded-3xl" role="button">
+                    <h2 class="text-4xl bg-slate-400">Select your Music</h2>
+                    <img src="./assets/imgs/music.jpg">
+                </section>
+            </div>
+            <div class="flex border-gradient ml-10">
+                <section class="cocktail-select card font-bold border rounded-3xl" role="button">
+                    <h2 class="text-4xl">Select your Cocktails</h2>
+                    <img src="./assets/imgs/cocktail.jpg">
+                </section>
+            </div>
         </section>
-        <section class="playpause">
-
+        <section>
+            <img class="absolute playpause bottom-0 right-0 w-20 m-10" src="./assets/imgs/playbutton.png">
         </section>
         <section class = "hidden" id="music-modal">
             <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
