@@ -25,6 +25,16 @@ body {
     transition: transform 0.3s ease-in-out;
 }
 
+.cocktail-border-gradient {
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-radius: 30px;
+  }
+.cocktail-border-gradient-purple {
+    border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+}
+
 .playpause {
     transition: width 0.3s ease-in-out, margin 0.3s ease-in-out;
 }
@@ -32,6 +42,10 @@ body {
 .playpause:hover {
     width: 100px;
     margin: 30px;
+}
+
+.ruby {
+    background-color: var(--ruby);
 }
 
 @keyframes rgb {
