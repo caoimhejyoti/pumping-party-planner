@@ -19,3 +19,6 @@ Then I recieve a list of the appropirate cocktail/music to mach my original pref
 Cocktails: https://www.thecocktaildb.com/api.php
 Music: https://developers.deezer.com/api
 
+### Resources:
+https://tailwindui.com/components/application-ui/overlays/modals
+https://tailwindui.com/components/application-ui/forms/select-menus
