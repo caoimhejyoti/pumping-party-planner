@@ -2,6 +2,7 @@
     <head>
         <title>Pumping Party Planner</title>
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
         <link rel="stylesheet" href="./assets/css/reset.css">
         <link rel="stylesheet" href="./assets/css/variables.css">
         <link rel="stylesheet" href="./assets/css/style.css">
@@ -91,63 +92,71 @@
                     <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     
                     <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="bg-white px-4 pt-5 pb-1 sm:p-6 sm:pb-4">
+                            <span class="float-right cursor-pointer" id="close-modal"><i class="fas fa-window-close"></i></span>
                             <div class="sm:flex sm:items-start">
-                                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-cadet-blue sm:mx-0 sm:h-10 sm:w-10">
                                     <i class="fas fa-cocktail"></i>
                                 </div>                                  
                                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                   <h3 class="text-lg font-bold leading-6 text-gray-900" id="modal-title">Cocktail Preferences
                                     <div class="mt-2">
-                                        <p class="text-sm text-gray-500">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
-                                    </div>
+                                      <p class="text-xs italic cadet-blue">Filter cocktails by name or by ingredient by choosing the search criteria below. Can't decide?? Let us choose a random cocktail for you!</p>
+                                  </div> 
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gray-50 px-4 py-3 sm:flex-col  sm:px-6">
+                        <div class="bg-gray-50 px-3 py-3 flex-row items-stretch sm:flex-col  sm:px-6">
                           <div id="radio-buttons" class="w-full">
-                            <form class="leading-10">
+                            <form class="p-3 b-2">
                               <fieldset id="radio-fields">
-                                <legend class="font-bold">Search Criteria</legend>
+                                <legend class="font-bold pb-2">Choose Search Criteria</legend>
                                 <input type="radio" id="by-name" name="search-options" value="by name">
-                                <label for="by-name">by name</label>
+                                <label for="by-name" class="text-sm">by name</label>
                                 <input type="radio" id="by-ingredient" name="search-options" value="by ingredient">
-                                <label for="by-ingredient">by ingredient</label>
+                                <label for="by-ingredient" class="text-sm">by ingredient</label>
                                 <input type="radio" id="random" name="search-options" value="random">
-                                <label for="random">random</label>
+                                <label for="random" class="text-sm">random</label>
                               </fieldset>
                             <!--removed div from here-->
-                            <fieldset id="name-fields" class="hidden">
-                              <label for="cocktail-name" class="font-bold">Cocktail name:</label>
-                              <input type="text" id="cocktail-name" class="border rounded-xl p-1 h-5">
+                            <fieldset id="name-fields" class="hidden py-2">
+                              <label for="cocktail-name" class="font-bold text-xs">Enter cocktail name:</label>
+                              <input type="text" id="cocktail-name" class="border rounded-xl p-1 h-5 text-xs">
                             </fieldset>
-                            <fieldset id="ingredient-fields" class="hidden">
-                              <label for="cocktail-ingredient">Cocktail ingredient:</label>
-                              <input type="text" id="cocktail-ingredient" class="border rounded-xl p-1">
+                            <fieldset id="ingredient-fields" class="hidden py-2">
+                              <label for="cocktail-ingredient" class="font-bold text-xs">Enter cocktail ingredient:</label>
+                              <input type="text" id="cocktail-ingredient" class="border rounded-xl p-1 text-xs">
                             </fieldset>
                             
                             </form>
-                            <div id="results" class="sm:flex">
-                              <div id="search-results" class="hidden leading-10">
-                                <ul>
-                                  <li data-img="https://www.thecocktaildb.com/images/media/drink/loezxn1504373874.jpg" data-id="17216" class="hover:border-red-300"><i class="fas fa-cocktail" aria-hidden="true"></i> Tommy's Margarita</li>
-                                </ul>
+                            <div id="results" class="hidden sm:flex h-48 py-4">
+                              <div id="search-results" class="hidden py-4 leading-5">
+                                
                               </div>
                               <div id="search-image" class="hidden">
                                 
                               </div>
                             </div>
                             
-                          <button type="button" id="search-button" class="inline-flex w-full justify-center rounded-md border border-transparent ruby px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">Search</button>
-                          <button type="button" id="cancel-button" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancel</button>
+                            
+                          </div> 
+
+                          <button type="button" id="search-button" class="inline-flex w-full justify-center rounded-md border border-transparent bg-ruby px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">Search</button>
+                          <button type="button" id="cancel-button" class="mt-3 inline-flex w-full justify-center rounded-md border bg-space-cadet px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Close</button>
+                          <!--
+                            <button type="button" id="help-button" class="mt-3 inline-flex w-full justify-center rounded-md border bg-space-cadet px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Help</button>
+                          -->
+                          
                         
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
     <script src="https://kit.fontawesome.com/b3cf47db47.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="./assets/js/cocktails.js"></script>
     <script src="./assets/js/music-modal.js"></script>
     </body>

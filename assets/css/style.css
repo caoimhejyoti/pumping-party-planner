@@ -25,16 +25,24 @@ body {
     transition: transform 0.3s ease-in-out;
 }
 
-.cocktail-border-gradient {
-    border: 10px solid;
-    border-image-slice: 1;
-    border-width: 5px;
-    border-radius: 30px;
-  }
-.cocktail-border-gradient-purple {
-    border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+.border-gradient-no-transition {
+    
+    padding: 10px;
+    background: linear-gradient(45deg, red, blue);
+    
+    
 }
 
+.cocktail-border {
+    border: 2px solid;
+    color: var(--cadet-blue);
+    border-radius: 18px;
+}
+/*
+.cocktail-border:hover {
+    transform: scale(1.1); 
+
+}*/
 .playpause {
     transition: width 0.3s ease-in-out, margin 0.3s ease-in-out;
 }
@@ -44,8 +52,24 @@ body {
     margin: 30px;
 }
 
-.ruby {
+.bg-ruby {
     background-color: var(--ruby);
+}
+
+.cadet-blue {
+    color: var(--cadet-blue);
+}
+
+.bg-cadet-blue {
+    background-color: var(--cadet-blue);
+}
+
+.bg-space-cadet {
+    background-color: var(--space-cadet);
+}
+
+.dark-orange {
+    color: var(--dark-orange);
 }
 
 @keyframes rgb {
