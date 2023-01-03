@@ -2,12 +2,18 @@
 //API variables
 let musicApi = 'https://api.deezer.com/version/service/id/method/?parameters';
 let musicApiFormat = '&output=json';
-
+let genreAPI = 'https://api.deezer.com/genre/'; //each genre has an Id which must be added to the url. The resulting object has a name as well as an id. use name to connect to the correct genre.
+let artistAPI = 'https://api.deezer.com/artist/'; //artists can be added by name to the url
+let apiSearchValues = "";
 
 //modal variables
 let musicModalEl = document.querySelector('#music-modal');
 let musicSearchResultsEl = document.querySelector('#music-search-results'); 
-let musicImageEl = document.querySelector('#music-image'); 
+let musicImageEl = document.querySelector('#music-image');
+let userRadioChoice = $("input[name='search-options']:checked").val();
+let musicSearchType = "";
+let filterType = "";
+
 
 //Button variables
 let selectMusicBtnEl = document.querySelector(".music-select");
@@ -33,8 +39,26 @@ let closeMusicModalFnc = function () {
     console.log("closeMusicModalFnc is reading"); //used for debugging
 };
 
+// DESCRIPTION: function to create API parameters based on user preferences
+let userSelectionFnc = function () {
 
+    let userRadioChoice = $("input[name='search-choice']:checked").val();
+    let musicSearchType = "";
+    let filterType = "";
 
+    console.log(userRadioChoice);
+
+    if  (typeof userRadioChoice == "undefined"){
+        alert("Please select either Genre or Artist");
+        return;
+    }
+    if (userRadioChoice == "artist"){
+        console.log("radioChoice - Artist"); //used for debugging
+        // apiSearchValues = $("#artist-search").val();
+    } 
+};
+
+// DESCRIPTION: function calling API
 
 
 
@@ -42,7 +66,7 @@ let closeMusicModalFnc = function () {
 //Event listeners
 selectMusicBtnEl.addEventListener("click", musicSelectionFnc);
 closeMusicBtnEl.addEventListener("click", closeMusicModalFnc);
-
+musicSearchBtnEl.addEventListener("click", userSelectionFnc);
 
 
 
