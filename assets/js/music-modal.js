@@ -38,7 +38,7 @@ let openMusicModalFnc = function(){
     $('#genre-fields').addClass("hidden");
     $('#artist-fields').addClass("hidden");
     $('#artist-fields').val(""); //clears search fields
-    $('#genre-fields').val(""); //clears search fields
+    // $('#genre-fields').val(""); //clears search fields
     
 };
 
@@ -62,19 +62,22 @@ let userSelectionFnc = function () {
         apiSearchValue = $("#artist-search").val();
         // console.log(apiSearchValue); //used for debugging
         artistSearchEl.classList.remove('hidden');
-        userSearchValue = $("#artist-fields").val();
-        $("#artist-fields").val();
-        console.log(userSearchValue); //used for debugging
+
     } 
-    callMusicApiFnc(apiSearchValue, userSearchValue)
+
 
 };
 
 // DESCRIPTION: function calling API
 let callMusicApiFnc = function (){
+    userSearchValue = $("#artist-value").val(); //FIXME: multiple words need to be separated by a - not a space. 
+    console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging WORKING!    
     let musicApi = baseMusicApi + apiSearchValue + "/" + userSearchValue;
     console.log(musicApi); //used for debugging WORKING!
-    console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging     
+    fetch(musicApi)
+        .then(function(response){
+            console.log(response); //used for debugging FIXME: not currently got the correct permissions. Error Code 200. Read for debugging: https://developers.deezer.com/api/oauth
+        });
 };
 
 
@@ -82,7 +85,7 @@ let callMusicApiFnc = function (){
 //Event listeners
 selectMusicBtnEl.addEventListener("click", openMusicModalFnc);
 closeMusicBtnEl.addEventListener("click", closeMusicModalFnc);
-// musicSearchBtnEl.addEventListener("click", );
+musicSearchBtnEl.addEventListener("click", callMusicApiFnc);
 
 
 
