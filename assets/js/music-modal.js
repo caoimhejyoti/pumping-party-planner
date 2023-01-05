@@ -86,6 +86,8 @@ let callMusicApiFnc = function (){
         // .then(function(response){
         //     console.log(response); //used for debugging FIXME: not currently got the correct permissions. Error Code 200. Read for debugging: https://developers.deezer.com/api/oauth
         // });
+
+        //TODO: use search function - narrow search but artist/album - look at RAPID API for more information. Fetch requires options as well as API URL. Options needs to contain API key and API Host. 
 };
 
 
