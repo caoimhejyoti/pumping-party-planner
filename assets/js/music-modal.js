@@ -1,5 +1,11 @@
 // global variables
 //API variables
+// deezer authorisation code = frafad6eb53d6a7c414cb7fd3bfb89b3
+// deezer APP ID = 575722
+// deezer secret Key = 74669ac83343e74a3ad8b7496a918e3e FIXME: remove before release
+// server side deezer access token = frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w @ 13:00 - 05.01.23 - with 3600s remaining
+// client-side deezer access token = https://caoimhejyoti.github.io/pumping-party-planner/#access_token=frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w&expires=2441
+let musicApiAccessToken = "frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w";
 // let musicApi = 'https://api.deezer.com/version/service/id/method/?parameters';
 let baseMusicApi = 'https://api.deezer.com/';
 let musicApiFormat = '&output=json';
@@ -54,7 +60,7 @@ let userSelectionFnc = function () {
     let userRadioChoice = $("input[name='search-choice']:checked").val();
 
     if  (typeof userRadioChoice == "undefined"){
-        alert("Please select either Genre or Artist");
+        // alert("Please select either Genre or Artist"); FIXME: make this a modal - Helen has started. 
         return;
     }
     if (userRadioChoice == "artist"){
@@ -72,12 +78,14 @@ let userSelectionFnc = function () {
 let callMusicApiFnc = function (){
     userSearchValue = $("#artist-value").val(); //FIXME: multiple words need to be separated by a - not a space. 
     console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging WORKING!    
-    let musicApi = baseMusicApi + apiSearchValue + "/" + userSearchValue;
+    let musicApi = "https://api.deezer.com/search/"  + apiSearchValue + "/?q=" + userSearchValue + "&index=0&limit=2&output=json"; //+ "#access_token=frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w&"
     console.log(musicApi); //used for debugging WORKING!
     fetch(musicApi)
-        .then(function(response){
-            console.log(response); //used for debugging FIXME: not currently got the correct permissions. Error Code 200. Read for debugging: https://developers.deezer.com/api/oauth
-        });
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+        // .then(function(response){
+        //     console.log(response); //used for debugging FIXME: not currently got the correct permissions. Error Code 200. Read for debugging: https://developers.deezer.com/api/oauth
+        // });
 };
 
 
@@ -89,4 +97,4 @@ musicSearchBtnEl.addEventListener("click", callMusicApiFnc);
 
 
 
-
+// Access to fetch at 'https://api.deezer.com/artist/drake#access_token=frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w&' from origin 'http://127.0.0.1:5502' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
