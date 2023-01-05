@@ -332,6 +332,7 @@ function displayIngredients(data) {
     searchImageEl.classList.add("p-0");
     searchImageEl.classList.add("ml-2");
     
+    
 }
 
 //main call to API
