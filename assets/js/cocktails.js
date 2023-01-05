@@ -27,11 +27,8 @@ function removeAllChildren(elem){
 //call API with cocktailID
 function getIngredients(event){
     //event.stopPropagation();
-    console.log("inside getIngredients");
     let chosenImg = event.target;
-    console.log(event.target.getAttribute('class'));
     let cocktailID = chosenImg.getAttribute("data-id");
-    console.log("getIngredients id " + cocktailID);
     if (cocktailID != null) {
         callAPI("lookup", "i", cocktailID);
     }
@@ -41,7 +38,7 @@ function getIngredients(event){
 //display image for cocktail using data-set values in clicked element eg src and cocktail name
 function displayImage(event) {
     let chosenDrink = event.currentTarget;
-    console.log(event.currentTarget.getAttribute('class'));
+    
     //if no data-set values then clicked somewhere other than on the icon to display an cocktail
     //image ie somewhere else in the search-results element
     if (chosenDrink.getAttribute("data-name") == null) {
@@ -63,10 +60,7 @@ function displayImage(event) {
     //style image ensuring cursor is a "hand"
     //indicates its a clickable element
     imgEl.classList.add("rounded-b-2xl");
-    imgEl.classList.add("cursor-pointer");
-    //add tooltip thats displayed when you hover over element
-    imgEl.setAttribute("data-bs-toggle","tooltip");
-    imgEl.setAttribute("title", "Click to see ingredients.");    
+    
 
     //display image and style it
     searchImageEl.classList.remove("hidden");
@@ -307,7 +301,7 @@ function displayIngredients(data) {
     //loop through 15 strings of ingredients returned from API
     //match with measures and display
     for (let i = 1; i < 15; i++) {
-        console.log("ingredient = " + data.drinks[0]["strIngredient" + i]);
+        
         if (data.drinks[0]["strIngredient" + i] != null) {
             liEl = document.createElement('li');
             if (data.drinks[0]["strMeasure" + i] != null) {
@@ -399,13 +393,13 @@ function chooseOption(event) {
     
     let chosenValue = event.target.value;
     let nameValue = document.querySelector("#name-fields");
-    //console.log(nameValue);
+    
     let ingredientValue = document.querySelector("#ingredient-fields");
-   // console.log(chosenValue);
-    if (chosenValue == "by name") {
+   
+    if (chosenValue == "name") {
         //show appropriate fields to get cocktail name from user
         //clear previous elements
-        console.log("chose name");
+        
         nameValue.classList.remove("hidden");
         ingredientValue.classList.add("hidden"); 
         removeAllChildren(searchImageEl);
@@ -413,7 +407,7 @@ function chooseOption(event) {
         //search-count displays results - clear any value there
         $("#search-count").html("");
 
-    } else if (chosenValue == "by ingredient"){
+    } else if (chosenValue == "ingredient"){
         //show appropriate fields to get cocktail ingredient from user
         //clear previous elements
         ingredientValue.classList.remove("hidden");
@@ -458,7 +452,7 @@ function searchHandler() {
         $("#error-modal-text").text("Please select to search by cocktail name, cocktail ingredient or choose a random cocktail.");
         return;
     }
-    if (chosenValue == "by name"){
+    if (chosenValue == "name"){
         //user chose "name" search, check they entered a cocktail name
         if (!isValid("cocktail-name")){
             displayError("Please enter the cocktail name.");
@@ -470,7 +464,7 @@ function searchHandler() {
         searchType = "s";
         filterType = "search";
         $("#cocktail-name").val("");
-    } else if (chosenValue == "by ingredient"){
+    } else if (chosenValue == "ingredient"){
         //user chose "ingredient" search, check they actually entered an ingredient
        
         if (!isValid("cocktail-ingredient")){
