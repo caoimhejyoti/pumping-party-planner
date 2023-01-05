@@ -8,7 +8,8 @@ let resultsEl = document.querySelector("#results");
 let searchImageEl = document.querySelector("#search-image");
 var radioEl = document.querySelector("#radio-buttons");
 var closeModalEl = document.querySelector("#close-modal");
-
+var errorModalEl = document.querySelector("#error-modal");
+var closeButtonEl = document.querySelector("#close-button");
 //remove user selections
 function clearInputFields() {
     $("#cocktail-name").val("");
@@ -78,7 +79,7 @@ function displayImage(event) {
     //create element to hold cocktail title at top of image
     let pEl = document.createElement('p');
     pEl.classList.add("text-center");
-    pEl.classList.add("text-xs");
+    pEl.classList.add("text-lg");
     pEl.classList.add("p-2");
     pEl.innerHTML = cocktailName;
     //add title and image
@@ -135,7 +136,7 @@ function displayData(data){
     if (!pEl) {
         //style search-count element
         pEl = document.createElement("p");
-        pEl.classList.add("text-sm");
+        pEl.classList.add("text-lg");
         pEl.classList.add("font-bold");
         pEl.classList.add("block");
         pEl.classList.add("w-full");
@@ -186,7 +187,7 @@ function displayData(data){
         } 
 
         //2nd column in table - holds cocktail name
-        td2.classList.add("text-sm");
+        td2.classList.add("text-lg");
         td2.innerHTML = data.drinks[i].strDrink;
         td2.setAttribute("data-img", data.drinks[i].strDrinkThumb);
         td2.setAttribute("data-id", data.drinks[i].idDrink);
@@ -290,13 +291,13 @@ function displayIngredients(data) {
     removeAllChildren(searchImageEl);
     //create p element to hold cocktail name
     pEl = document.createElement("p");
-    pEl.classList.add("text-sm");
+    pEl.classList.add("text-lg");
     pEl.classList.add("font-bold");
     pEl.innerHTML = data.drinks[0]["strDrink"];
 
     //create Ul to hold cocktail ingredients
     ulEl = document.createElement("ul");
-    ulEl.classList.add("text-sm");
+    ulEl.classList.add("text-lg");
     
     ulEl.classList.add("cadet-blue");
     //add bullet point to each ingredient
@@ -374,7 +375,8 @@ function callAPI(filterType, searchType, searchCriteria) {
        })
         .catch(function(error){
             //no data found in API search - tell user
-            alert("Sorry nothing matches your search. Please try again."); 
+            displayError("Sorry nothing matches your search. Please try again.");
+            //alert("Sorry nothing matches your search. Please try again."); 
             return null;
         }
         );
@@ -397,10 +399,13 @@ function chooseOption(event) {
     
     let chosenValue = event.target.value;
     let nameValue = document.querySelector("#name-fields");
+    //console.log(nameValue);
     let ingredientValue = document.querySelector("#ingredient-fields");
+   // console.log(chosenValue);
     if (chosenValue == "by name") {
         //show appropriate fields to get cocktail name from user
         //clear previous elements
+        console.log("chose name");
         nameValue.classList.remove("hidden");
         ingredientValue.classList.add("hidden"); 
         removeAllChildren(searchImageEl);
@@ -433,94 +438,132 @@ function chooseOption(event) {
     searchResultsEl.classList.add("hidden");
     searchImageEl.classList.add("hidden");
 }
-
+//function called when search button clicked
 function searchHandler() {
-    
+    //get value of checked radio button
     let chosenValue = $("input[name='search-options']:checked").val();
    
     let searchValue = '';
     let searchType = '';
     let filterType = '';
-
+    //remove any previously created elements
     removeAllChildren(searchImageEl);
     removeAllChildren(searchResultsEl);
+    //remove the border around the ingredients/image if its still there
     searchImageEl.classList.remove("cocktail-border");
-    
-    if (typeof chosenValue == "undefined") {
-        alert("Please select to search by cocktail name, cocktail ingredient or choose a random cocktail.");
+    //check user actually selected something before clicking search button
+    if (typeof chosenValue == "undefined") { //user did nt select anything
+        //("Please select to search by cocktail name, cocktail ingredient or choose a random cocktail.");
+        errorModalEl.classList.remove("hidden");
+        $("#error-modal-text").text("Please select to search by cocktail name, cocktail ingredient or choose a random cocktail.");
         return;
     }
     if (chosenValue == "by name"){
-       // console.log('searchhandler - name');
+        //user chose "name" search, check they entered a cocktail name
         if (!isValid("cocktail-name")){
-            alert("Please enter the cocktail name.");
+            displayError("Please enter the cocktail name.");
+            //alert("Please enter the cocktail name.");
             return;
         }
+        //set up parameters for API call
         searchValue = $("#cocktail-name").val();
         searchType = "s";
         filterType = "search";
         $("#cocktail-name").val("");
     } else if (chosenValue == "by ingredient"){
-       // console.log('searchHandler - ingredient');
+        //user chose "ingredient" search, check they actually entered an ingredient
+       
         if (!isValid("cocktail-ingredient")){
-            alert("Please enter the ingredient name.")
+            displayError("Please enter the ingredient name.");
+            //alert("Please enter the ingredient name.")
             return;
         }
+        //setup parameter for API call
         searchValue = $("#cocktail-ingredient").val();
         searchType = "i";
         $("#cocktail-ingredient").val("");
         filterType = "filter";
     } else {
+        //setup parameter for API call
         filterType = "random";
     }
-// XXX
+    //call API with correct parameters
     callAPI(filterType, searchType, searchValue);
-    //console.log("returned = " + dataReturned);
-    //displayData(dataReturned);
+    
 }
 
+//called from randomize button - select a random cocktail
+function randomize(){
+    removeAllChildren(searchImageEl);
+    searchImageEl.classList.remove("cocktail-border");
+    callAPI("random", "", "");
+}
+
+//called from main page to open cocktail modal
 function openModal() {
+    //remove any previous elements and clear all input fields
     removeAllChildren(searchResultsEl);
     clearInputFields();
     removeAllChildren(searchImageEl);
+    //show modal
     cocktailModalEl.classList.remove("hidden");
-    
-    //var cancelEl = document.getElementById("#cancel-button");
+    //get access to "randomise button", and add eventlistener
+    //!!!! var cancelEl = document.querySelector("#random-button");
     var cancelEl = document.querySelector("#cancel-button");
-    cancelEl.addEventListener("click", closeModal);
-    //console.log('inside openmodal');
-    
+    //cancelEl.addEventListener("click", closeModal);
+    cancelEl.addEventListener("click", randomize);
+    //add eventlistener to radion buttons     
     radioEl.addEventListener("click", chooseOption);
+
+    //make sure previous selections/inputs are cleared and hidden
     $('input[name="search-options"]').attr('checked', false);
     $('#name-fields').addClass("hidden");
     $('#ingredient-fields').addClass("hidden");
-    //cancelEl.addEventListener("click", closeModal);
 }
-
+//closes modal - called from "X" at top right of modal window
 function closeModal() {
-    //alert("close");
+    //hide all elements
     cocktailModalEl.classList.add("hidden");
     searchResultsEl.classList.add("hidden");
     searchImageEl.classList.add("hidden");
+    //clear element that shows search results
     $("#search-count").html("");
     $("#search-count").remove();
-   // console.log('inside openmodal');
+   
+}
+//closes error modal - attached to ok button on error modal
+function closeErrorModal() {
+    errorModalEl.classList.add("hidden");
 }
 
+//helper function to display any error messsage to the error-modal element
+function displayError(msg) {
+    errorModalEl.classList.remove("hidden");
+    $("#error-modal-text").text(msg);
+       
+}
+//save cocktail details to local storage
 function saveCocktail(event) {
+    //ensure no further events are triggered
     event.stopPropagation();
+    //find out which cocktail was clicked
     let chosenDrink = event.currentTarget;
-    console.log(event.target.getAttribute('class'));
+    //get cocktail details
     let cocktailID = chosenDrink.getAttribute("data-id");
     let cocktailName = chosenDrink.getAttribute("data-name");
     let cocktailImg = chosenDrink.getAttribute("data-img");
     let cocktailIngred = chosenDrink.getAttribute("data-ingred");
     let arrayCocktails;
+    //get previous stored details 
     let storedCocktails = localStorage.getItem("cocktails");
     searchCriteria = cocktailID;
 
+    //check if we have ingredients from original API call
+    //API call by name returns ingredients and we keep them in data-set
+    //API call by ingredient does nt return all ingredients
+    //need to make another API call to get ingredients using ingredient ID
     if (cocktailIngred != "" && cocktailIngred != null) {
-        console.log("got ingredients from data-set");
+        //already have ingredients
         let currentCocktail = {
             id: cocktailID,
             name: cocktailName,
@@ -531,39 +574,36 @@ function saveCocktail(event) {
         //check if first time to store to local storage
         //create blank array and add element
         if (storedCocktails == null){
-            console.log("Storing first cocktail");
             arrayCocktails = [currentCocktail];
         } else {
         //already have saved cocktail so update array with new cocktail
-        console.log("already have cocktails")
             arrayCocktails = JSON.parse(storedCocktails);
-        if (arrayCocktails.filter(e => e.id === cocktailID).length === 0) {
-            console.log("Storing - " + cocktailName);
-            arrayCocktails.push(currentCocktail);
+            //check if we already saved this actual cocktail
+            //dont want to store it again
+            //filter array of objects based on id field in objects
+            if (arrayCocktails.filter(e => e.id === cocktailID).length === 0) {
+                arrayCocktails.push(currentCocktail);
+            }
         }
-        }
-        console.log("Final storing - " + JSON.stringify(arrayCocktails));
+        //convert to JSON and save
         localStorage.setItem("cocktails", JSON.stringify(arrayCocktails));
-
-
-            $(`td[data-id='${cocktailID}']`).addClass("dark-orange");   
-            chosenDrink.innerHTML = "<i class='fa-solid fa-check'></i>";
-            //$(`td[data-id='${cocktailID}']`).addClass("font-bold"); 
-             
-
+        //turn saved cocktail orange to indicate saved
+        $(`td[data-id='${cocktailID}']`).addClass("dark-orange");  
+        //change icon to indicate saved cocktail    
+        chosenDrink.innerHTML = "<i class='fa-solid fa-check'></i>";
     } else {
-        console.log("API Call to get ingredients");
+        //we dont already have the ingredients - need to make new API call to get them
         let requestUrl = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${searchCriteria}`;
-        console.log("storing - " + cocktailName);
 
-        fetch(requestUrl) // call API to get lat and lon
+        fetch(requestUrl) //API call
             .then(function (response) {
                 //convert to JSON
                 return response.json();
             })
             .then(function (data) {
-                console.log(data);
+                //extract ingredients from object returned by API call
                 cocktailIngred = getAllIngredients(data.drinks[0]);
+                //create new object to add to local storage
                 let currentCocktail = {
                     id: cocktailID,
                     name: cocktailName,
@@ -574,25 +614,25 @@ function saveCocktail(event) {
             //check if first time to store to local storage
             //create blank array and add element
             if (storedCocktails == null){
-                console.log("Storing first cocktail");
                 arrayCocktails = [currentCocktail];
             } else {
             //already have saved cocktail so update array with new cocktail
-            console.log("already have cocktails")
                 arrayCocktails = JSON.parse(storedCocktails);
-            if (arrayCocktails.filter(e => e.id === cocktailID).length === 0) {
-                console.log("Storing - " + cocktailName);
-                arrayCocktails.push(currentCocktail);
+                //check if we already have this exact cocktails stored already
+                if (arrayCocktails.filter(e => e.id === cocktailID).length === 0) {
+                    arrayCocktails.push(currentCocktail);
+                }
             }
-            }
-            console.log("Final storing - " + JSON.stringify(arrayCocktails));
+            //convert to JSON and store in local storage
             localStorage.setItem("cocktails", JSON.stringify(arrayCocktails));
-            $(`td[data-id='${cocktailID}']`).addClass("dark-orange");   
+            //turn orange to indicate saved
+            $(`td[data-id='${cocktailID}']`).addClass("dark-orange"); 
+            //change icon to tick - indiate saved  
             chosenDrink.innerHTML = "<i class='fa-solid fa-check'></i>";
-            //$(`td[data-id='${cocktailID}']`).addClass("font-bold");  
        })
         .catch(function(error){
-            alert("Error!!"); 
+            displayError("Error saving cocktails details, please try again.");
+            //alert("Error saving cocktails details, please try again."); 
             return null;
         }
         );   
@@ -600,17 +640,7 @@ function saveCocktail(event) {
     }
     
 }
-
-/*
-Whisky Sour
-Daiquiri
-Manhattan
-Dry Martini
-Espresso Martini
-Margarita
-Aperol Spritz
-Moscow Mule
-*/
+//use jquery too setup autocomplete for name/ingredient fields
 
 $(function () {
     var cocktailNames = [
@@ -652,15 +682,12 @@ $(function () {
         source: cocktailIngred,
       });
 
+      //add eventlisteners
       selectCocktailBtnEl.addEventListener("click", openModal);
       searchButtonEl.addEventListener("click", searchHandler);
-    //btn.addEventListener("click", openModel);
-      //searchResultsEl.addEventListener("click", displayImage);
-      //searchResultsEl.addEventListener("click", getIngredients);
-      //searchImageEl.addEventListener("click", getIngredients);
-     // searchImageEl.addEventListener("click", displayImage);
       closeModalEl.addEventListener("click", closeModal);
-
+      closeButtonEl.addEventListener("click", closeErrorModal);
+      //closeModalEl.addEventListener("click", randomize);
   });
 
 
