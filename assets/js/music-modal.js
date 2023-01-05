@@ -1,16 +1,5 @@
 // global variables
 //API variables
-// deezer authorisation code = frafad6eb53d6a7c414cb7fd3bfb89b3
-// deezer APP ID = 575722
-// deezer secret Key = 74669ac83343e74a3ad8b7496a918e3e FIXME: remove before release
-// server side deezer access token = frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w @ 13:00 - 05.01.23 - with 3600s remaining
-// client-side deezer access token = https://caoimhejyoti.github.io/pumping-party-planner/#access_token=frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w&expires=2441
-let musicApiAccessToken = "frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w";
-// let musicApi = 'https://api.deezer.com/version/service/id/method/?parameters';
-let baseMusicApi = 'https://api.deezer.com/';
-let musicApiFormat = '&output=json';
-let genreAPI = 'https://api.deezer.com/genre/'; //each genre has an Id which must be added to the url. The resulting object has a name as well as an id. use name to connect to the correct genre.
-let artistAPI = 'https://api.deezer.com/artist/'; //artists can be added by name to the url
 let apiSearchValue = "";
 let userSearchValue = "";
 
@@ -74,20 +63,25 @@ let userSelectionFnc = function () {
 
 };
 
-// DESCRIPTION: function calling API
+
+// DESCRIPTION: function calling API - using musicbrainz API
+
+// MusicBrainz API:
+let musicBaseApi = "https://musicbrainz.org/ws/2/";
+
 let callMusicApiFnc = function (){
     userSearchValue = $("#artist-value").val(); //FIXME: multiple words need to be separated by a - not a space. 
     console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging WORKING!    
-    let musicApi = "https://api.deezer.com/search/"  + apiSearchValue + "/?q=" + userSearchValue + "&index=0&limit=2&output=json"; //+ "#access_token=frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w&"
+    let musicApi = musicBaseApi + apiSearchValue + "/?query=" + apiSearchValue + ":" + userSearchValue + "&fmt=json";
     console.log(musicApi); //used for debugging WORKING!
-    fetch(musicApi)
+    let userAgent = "Pumping Party Planner/1.0.0 (https://caoimhejyoti.github.io/pumping-party-planner)";
+    
+    
+    fetch(musicApi, {userAgent}) //WORKING!
         .then((response) => response.json())
-        .then((data) => console.log(data));
-        // .then(function(response){
-        //     console.log(response); //used for debugging FIXME: not currently got the correct permissions. Error Code 200. Read for debugging: https://developers.deezer.com/api/oauth
-        // });
+        .then((data) => console.log(data))
 
-        //TODO: use search function - narrow search but artist/album - look at RAPID API for more information. Fetch requires options as well as API URL. Options needs to contain API key and API Host. 
+
 };
 
 
