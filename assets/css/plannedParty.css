@@ -1,0 +1,106 @@
+body {
+    background: black;
+    overflow: hidden;
+}
+
+h1 {
+    animation: text-shadow 15s ease-in-out infinite;
+    font-size: 5em;
+    font-weight: 900;
+    line-height: 1;
+}
+.card {
+    min-width: 100%;
+    min-height: 90%;
+    padding: 1rem;
+    background: white;
+}
+.border-gradient {
+    min-width: 20%;
+    max-width: 300px;
+    min-height: 60%;
+    max-height: 60%;
+    padding: 10px;
+    background: linear-gradient(45deg, red, blue);
+    border-radius: 30px;
+}
+
+.border-gradient-no-transition {
+    padding: 10px;
+    background: linear-gradient(45deg, red, blue);   
+}
+
+@keyframes text-shadow {
+    0% {  
+        transform: translateY(0);
+        text-shadow: 
+            0 0 0 #0c2ffb, 
+            0 0 0 #2cfcfd, 
+            0 0 0 #fb203b, 
+            0 0 0 #fefc4b;
+    }
+
+    2% {  
+        transform: translateY(-1em);
+        text-shadow: 
+            0 0.125em 0 #0c2ffb, 
+            0 0.25em 0 #2cfcfd, 
+            0 -0.125em 0 #fb203b, 
+            0 -0.25em 0 #fefc4b;
+    }
+
+    4% {  
+        transform: translateY(0.5em);
+        text-shadow: 
+            0 -0.0625em 0 #0c2ffb, 
+            0 -0.125em 0 #2cfcfd, 
+            0 0.0625em 0 #fb203b, 
+            0 0.125em 0 #fefc4b;
+    }
+    
+   6% {
+        transform: translateY(-0.25em);
+        text-shadow: 
+            0 0.03125em 0 #0c2ffb, 
+            0 0.0625em 0 #2cfcfd, 
+            0 -0.03125em 0 #fb203b, 
+            0 -0.0625em 0 #fefc4b;
+    }
+
+    8% {  
+        transform: translateY(0);
+        text-shadow: 
+            0 0 0 #0c2ffb, 
+            0 0 0 #2cfcfd, 
+            0 0 0 #fb203b, 
+            0 0 0 #fefc4b;
+    }
+    49% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-0.5rem);
+    }
+    51% {
+        transform: translateX(1rem);
+    }
+    52% {
+        transform: translateX(0);
+    }
+}
+
+.cocktailList {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    max-height: 70%;
+    overflow-y: scroll;
+}
+
+.cocktailList li {
+    width: 50%;
+}
+.cocktailList img {
+    padding: 2px;
+}
