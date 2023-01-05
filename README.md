@@ -22,3 +22,8 @@ Music: https://developers.deezer.com/api
 ### Resources:
 https://tailwindui.com/components/application-ui/overlays/modals
 https://tailwindui.com/components/application-ui/forms/select-menus
+<!-- used for resolving music API bugs -->
+https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
