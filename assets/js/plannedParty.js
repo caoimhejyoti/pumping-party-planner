@@ -41,6 +41,7 @@ function loadMusic() {
 }
 
 function switchDetails(e) {
+    console.log("this is working ");
     let cocktailTarget = e.target;
     let cocktailIndex = cocktailTarget.classList[0];
     let showIng = document.querySelector(`p._${cocktailIndex}`);
