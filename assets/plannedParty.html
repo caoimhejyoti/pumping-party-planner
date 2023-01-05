@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+    <head>
+        <title>Pumping Party Planner</title>
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/variables.css">
+        <link rel="stylesheet" href="./css/plannedParty.css">
+    </head>
+    <body>  
+        <nav>
+            <h1 class="pt-20 text-white title text-6xl text-center font-extrabold">Pumping Party Planner</h1>
+        </nav>
+        <section class="fixed flex justify-center w-screen h-screen text-center mt-20">
+            <!-- music card -->
+            <div class="flex border-gradient mr-10">
+              <section class="music-select card object-fill font-bold border rounded-3xl" role="button">
+                <h2 class="text-4xl bg-slate-400">Your Music</h2>
+                <ul class="musicList">
+                </ul>
+              </section>
+            </div>
+            <!-- cocktail card -->
+              <div class="flex border-gradient ml-10">
+                <section class="cocktail-select card font-bold border rounded-3xl" id="cocktail-select" role="button">
+                  <h2 class="text-4xl">Your Cocktails</h2>
+                  <ul class="cocktailList">
+                  </ul>
+                </section>
+              </div>
+          </section>
+        <script src="https://kit.fontawesome.com/b3cf47db47.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="./js/plannedParty.js"></script>
+    </body>
+</html>
