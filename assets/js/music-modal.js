@@ -1,7 +1,11 @@
+// TODO: remove all highlighted notes!
 // global variables
 //API variables
 let apiSearchValue = "";
 let userSearchValue = "";
+// MusicBrainz API:
+let musicBaseApi = "https://musicbrainz.org/ws/2/";
+let userAgent = "Pumping Party Planner/1.0.0 (https://caoimhejyoti.github.io/pumping-party-planner)";
 
 //modal variables
 let musicModalEl = document.querySelector('#music-modal');
@@ -10,6 +14,8 @@ let musicImageEl = document.querySelector('#music-image');
 let artistSearchEl = document.querySelector('#artist-fields');
 let genreSearchEl = document.querySelector('#genre-fields');
 
+//local storage variables
+let artistId = JSON.parse(localStorage.getItem("artist_id"));
 
 
 //Button variables
@@ -63,26 +69,70 @@ let userSelectionFnc = function () {
 
 };
 
-
 // DESCRIPTION: function calling API - using musicbrainz API
-
-// MusicBrainz API:
-let musicBaseApi = "https://musicbrainz.org/ws/2/";
-
 let callMusicApiFnc = function (){
     userSearchValue = $("#artist-value").val(); //FIXME: multiple words need to be separated by a - not a space. 
     console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging WORKING!    
     let musicApi = musicBaseApi + apiSearchValue + "/?query=" + apiSearchValue + ":" + userSearchValue + "&fmt=json";
     console.log(musicApi); //used for debugging WORKING!
-    let userAgent = "Pumping Party Planner/1.0.0 (https://caoimhejyoti.github.io/pumping-party-planner)";
-    
-    
+    // let userAgent = "Pumping Party Planner/1.0.0 (https://caoimhejyoti.github.io/pumping-party-planner)";
+        
     fetch(musicApi, {userAgent}) //WORKING!
-        .then((response) => response.json())
-        .then((data) => console.log(data))
+        .then (function (response){
+            response.json().then(function (data) {
+                console.log(data); //used for debugging 
+            if (response.ok) {
+                let artistIdData = data.artists[0].id;
+                localStorage.setItem("artist_id", JSON.stringify(artistIdData));
+                console.log("from fetch - artistID: " + artistIdData); //used for debugging WORKING!
+                artistId = JSON.parse(localStorage.getItem("artist_id"));
+                console.log("artistID from within fetch (post parsing): " + artistId); //used for debugging WORKING!
 
-
+                displayArtistTrackListFnc();
+            }
+            else{
+                let errorMessage = "Error location: display fetch results";
+                displayErrorModal(errorMessage);
+            }
+            });
+        })
+        .catch (function (error) {
+            let errorMessage = "Error location: fetch not possible";
+            displayErrorModal(errorMessage);
+        });
+        console.log("music API fetch is reading"); //used to confirm function is reading
+        
+        // .then((response) => response.json())
+        // .then((data) => console.log(data)) //used to confirm API fetch request works.
+        //     if (response.ok){
 };
+
+
+
+let displayArtistTrackListFnc = function() {
+    console.log("inside displayArtistTrackListFnc" ); //WORKING! 
+    console.log("artistID from within displayArtistTrackListFnc: " + artistId); //WORKING! used for debugging
+    let artistAlbumListApi = musicBaseApi + "release-group?" + apiSearchValue + "=" + artistId + "&type=album" + "&fmt=json";
+    // let artistTrackListApi = musicBaseApi + "release-group?" + apiSearchValue + "=" + artistId + "&type=single" + "&fmt=json";
+    // let artistTrackListApi = musicBaseApi + "release?track?" + apiSearchValue + "=" + artistId + "&fmt=json";
+    console.log(artistAlbumListApi); //used for debugging 
+
+    fetch(artistAlbumListApi, {userAgent})
+        // .then((response) => response.json())
+        // .then((data) => console.log(data)) //used to confirm API fetch request works.
+        .then (function (response){
+            response.json().then(function (data) {
+                console.log(data); //used for debugging 
+            if (response.ok) {
+                let releaseGroups = data.release-groups //not able to read the release-groups?
+                for (var i = 0; i < releaseGroups.length; i++) {
+                let albumList = releaseGroups[i].title
+                console.log(albumList);
+            }}
+        });
+        })
+}
+
 
 
 
