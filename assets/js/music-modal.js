@@ -36,10 +36,12 @@ let openMusicModalFnc = function(){
     console.log("openMusicModalFnc is reading"); //used for debugging
     musicRadioEl.addEventListener("click", userSelectionFnc);
     $('input[name="search-choice"]').attr('checked', false);
-    $('#genre-fields').addClass("hidden");
+    $('#genre-fieldset').addClass("hidden");
     $('#artist-fields').addClass("hidden");
-    $('#artist-fields').val(""); //clears search fields
-    // $('#genre-fields').val(""); //clears search fields
+    $('#artist-value').val(""); //clears search value
+    $('#user-genre').val(""); //clears search value
+    $('#music-search-results').addClass("hidden");
+    $('#music-search-results').val(""); //clears results 
     
 };
 
@@ -130,16 +132,20 @@ let displayArtistTrackListFnc = function() {
                 for (var i = 0; i < releaseGroups.length; i++) {
                 albumList.push(releaseGroups[i].title);
 
-                console.log(albumList); // used for debugging
             }
-            let updatedAlbumList = [];
-            updatedAlbumList = albumList[0];
+            console.log(albumList); // used for debugging
+            // let updatedAlbumList = [];
+            // updatedAlbumList = albumList;
             let albumListEl = document.createElement("p");
             let musicSearchResultsEl = document.querySelector("#music-search-results")
             musicSearchResultsEl.classList.remove('hidden');
-            console.log(updatedAlbumList);
-            albumListEl.textContent = updatedAlbumList.forEach(element => element.textContent);
-            musicSearchResultsEl.appendChild(albumListEl);
+            console.log(albumList);
+            albumListEl.textContent = albumList;
+            for (var i = 0; i < albumList.length; i++) {
+                let albumResultsEl = document.createElement("li");
+                albumResultsEl.textContent = albumList[i];
+                musicSearchResultsEl.appendChild(albumResultsEl);
+            }
             }
         });
         })
