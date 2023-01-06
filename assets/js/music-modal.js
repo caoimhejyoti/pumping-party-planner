@@ -131,8 +131,16 @@ let displayArtistTrackListFnc = function() {
                 albumList.push(releaseGroups[i].title);
 
                 console.log(albumList); // used for debugging
-                
-            }}
+            }
+            let updatedAlbumList = [];
+            updatedAlbumList = albumList[0];
+            let albumListEl = document.createElement("p");
+            let musicSearchResultsEl = document.querySelector("#music-search-results")
+            musicSearchResultsEl.classList.remove('hidden');
+            console.log(updatedAlbumList);
+            albumListEl.textContent = updatedAlbumList.forEach(element => element.textContent);
+            musicSearchResultsEl.appendChild(albumListEl);
+            }
         });
         })
 }
