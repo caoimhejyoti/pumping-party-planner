@@ -124,10 +124,14 @@ let displayArtistTrackListFnc = function() {
             response.json().then(function (data) {
                 console.log(data); //used for debugging 
             if (response.ok) {
-                let releaseGroups = data.release-groups //not able to read the release-groups?
+                let releaseGroups = data["release-groups"]; //not able to read the release-groups?
+                console.log(releaseGroups);
+                let albumList = [];
                 for (var i = 0; i < releaseGroups.length; i++) {
-                let albumList = releaseGroups[i].title
-                console.log(albumList);
+                albumList.push(releaseGroups[i].title);
+
+                console.log(albumList); // used for debugging
+                
             }}
         });
         })
