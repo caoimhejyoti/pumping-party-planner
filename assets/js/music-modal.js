@@ -141,11 +141,78 @@ let displayArtistTrackListFnc = function() {
             musicSearchResultsEl.classList.remove('hidden');
             console.log(albumList);
             albumListEl.textContent = albumList;
+            let musicTableEl = document.createElement("table");
             for (var i = 0; i < albumList.length; i++) {
-                let albumResultsEl = document.createElement("li");
-                albumResultsEl.textContent = albumList[i];
-                musicSearchResultsEl.appendChild(albumResultsEl);
+
+                // creating table html for albums to be entred into 
+                let mtr = document.createElement("tr");
+                let mtd1 = document.createElement("td");
+                let mtd2 = document.createElement("td");
+                let mtd3 = document.createElement("td");
+                let mtd4 = document.createElement("td");
+
+                //first column = album icon from font awesome.
+                mtd1.innerHTML = '<i class="fas fa-album"></i>'; //FIXME: not displaying 
+
+                //TODO: add saved styling
+
+                //second column = artist name 
+                mtd2.classList.add("text-lg");
+                mtd2.innerHTML = albumList[i];
+
+                //second column hover styling = grey background + tooltip for instructions
+                mtd2.classList.add("hover:bg-gray-300");
+                mtd2.classList.add("rounded-lg");
+                mtd2.classList.add("cursor-pointer");
+                mtd2.setAttribute("data-bs-toggle","tooltip");
+                mtd2.setAttribute("title", "Click to see album tracks.");
+
+                //TODO: add saved styling
+                //TODO: add event listener to list tracks once album name is clicked
+
+                //third column = img icon from font awesome. User to click to display album artwork
+                //font awesome picture icon
+                mtd3.innerHTML = '<i class="fa-solid fa-image"></i>';
+                mtd3.classList.add("cursor-pointer");
+                //add tooltip so when you hover it gives instructions 
+                mtd3.setAttribute("data-bs-toggle","tooltip");
+                mtd3.setAttribute("title", "Click to view album artwork.");
+
+                //TODO: add saved styling 
+                //TODO: add event listener to show album artwork
+
+                //fourth column = save/tick icon from font awesome depending on whether album is saved.
+                //TODO: add saved styling [if function/else]
+                mtd4.innerHTML = '<i class="far fa-save"></i>';
+                mtd4.classList.add("cursor-pointer");
+                //add tooltip so when hover instructions are displayed
+                mtd4.setAttribute("data-bs-toggle","tooltip");
+                mtd4.setAttribute("title", "Click to save full album.");
+                //TODO: add event listener save album 
+                // mtd4.addEventListener("click", saveAlbum);
+
+                //add all colums to each row
+                mtr.appendChild(mtd1);
+                mtr.appendChild(mtd2);
+                mtr.appendChild(mtd3);
+                mtr.appendChild(mtd4);
+                //add row to table
+                musicTableEl.appendChild(mtr);
+
+                // let albumResultsEl = document.createElement("p");
+                // albumResultsEl.classList.add("text-lg");
+                // albumResultsEl.textContent = albumList[i];
+                // musicSearchResultsEl.appendChild(albumResultsEl);
             }
+            //create scrollable element around results
+            musicSearchResultsEl.classList.add("h-full");
+            musicSearchResultsEl.classList.add("max-h-full");
+            //only scrollable on y axis
+            musicSearchResultsEl.classList.add("overflow-y-auto");
+            musicSearchResultsEl.classList.add("max-w-full");
+            //add table to search results
+            musicSearchResultsEl.appendChild(musicTableEl);
+
             }
         });
         })
