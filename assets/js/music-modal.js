@@ -113,16 +113,21 @@ let displayArtistAlbumListFnc = function() {
     fetch(artistAlbumListApi, {userAgent})
         .then (function (response){
             response.json().then(function (data) {
-                console.log("album list [116]" + data); //used for debugging 
-            if (response.ok) {
-                let releaseGroups = data["release-groups"]; 
-                // console.log(releaseGroups); //used for debugging
-                let albumList = [];
-                for (var i = 0; i < releaseGroups.length; i++) {
-                albumList.push(releaseGroups[i].title);
-                }
-            // console.log(albumList); // used for debugging
-            let albumListEl = document.createElement("p");
+                console.log(data); //used for debugging 
+                if (response.ok) {
+                    let releaseGroups = data["release-groups"]; 
+                    // console.log(releaseGroups); //used for debugging
+                    let albumList = [];
+                    let albumId = [];
+                    for (var i = 0; i < releaseGroups.length; i++) {
+                        albumList.push(releaseGroups[i].title);
+                        albumId.push(releaseGroups[i]["primary-type-id"]);
+                    }
+                    // console.log(albumList); // used for debugging
+                    console.log(albumId); // used for debugging
+                    console.log(albumId[0]); //used for debugging 
+                    window.albumId = albumId[0]
+                    let albumListEl = document.createElement("p");
             let musicSearchResultsEl = document.querySelector("#music-search-results")
             musicSearchResultsEl.classList.remove('hidden');
             albumListEl.textContent = albumList;
@@ -204,12 +209,22 @@ let displayArtistAlbumListFnc = function() {
 //TODO: create function!
 let displayTracksFnc = function(){
 console.log("displayTracksFnc is reading");
+let testAPI = "https://musicbrainz.org/ws/2/release-group/a73cecde-0923-40ad-aad1-e8c24ba6c3d2?inc=aliases%2Bartist-credits%2Breleases&fmt=json"
+fetch (testAPI)
+    .then((response) => response.json())
+    .then((data) => console.log(data)) //used to confirm API fetch request works.
 };
 
 //DESCRIPTION: function to display artwork - using musicbrainz API
 //TODO: create function!
 let displayArtworkFnc = function(){
     console.log("displayArtworkFnc is reading");
+
+    
+    // fetch ("http://coverartarchive.org/release/f529b476-6e62-324f-b0aa-1f3e33d313fc")
+    fetch ("https://coverartarchive.org/release/"+window.albumId)
+    .then((response) => response.json())
+    .then((data) => console.log(data)) //used to confirm API fetch request works.    
 };
 
 //DESCRIPTION: function to display artwork - using musicbrainz API
