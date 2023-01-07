@@ -13,6 +13,7 @@ let musicSearchResultsEl = document.querySelector('#music-search-results');
 let musicImageEl = document.querySelector('#music-image');
 let artistSearchEl = document.querySelector('#artist-fields');
 let genreSearchEl = document.querySelector('#genre-fields');
+let musicErrorModalEl = document.querySelector('#music-error-modal');
 
 //local storage variables
 let artistId = JSON.parse(localStorage.getItem("artist_id"));
@@ -26,6 +27,8 @@ let musicSearchBtnEl = document.querySelector("#music-search");
 let musicRandomBtnEl = document.querySelector("#music-randomize");
 // console.log(musicRansdomBtnEl); //used for debugging
 let closeMusicBtnEl = document.querySelector("#close-music-modal"); 
+// console.log(closeMusicBtnEl); //used for debugging
+let closeErrorModalBtnEl = document.querySelector("#music-error-close-button"); 
 // console.log(closeMusicBtnEl); //used for debugging
 var musicRadioEl = document.querySelector("#music-radio-buttons");
 // console.log(musicRadioEl); //used for debugging
@@ -51,13 +54,16 @@ let closeMusicModalFnc = function () {
     console.log("closeMusicModalFnc is reading"); //used for debugging
 };
 
-//DESCRIPTION: function to create API parameters based on user preferences
+//DESCRIPTION: function to create API parameters based on user preferences //FIXME: not reading error message!
 let userSelectionFnc = function () {
 
     let userRadioChoice = $("input[name='search-choice']:checked").val();
 
     if  (typeof userRadioChoice == "undefined"){
-        // alert("Please select either Genre or Artist"); FIXME: make this a modal - Helen has started. 
+    console.log("help!");
+
+        musicErrorModalEl.classList.remove("hidden");
+        $("#music-error-modal-text").text("Please select a search criteria");//FIXME: this is not being triggered.
         return;
     }
     if (userRadioChoice == "artist"){
@@ -67,7 +73,11 @@ let userSelectionFnc = function () {
         artistSearchEl.classList.remove('hidden');
 
     } 
+    else if (userRadioChoice == "genre"){
+        let errorMessage = "We are still working on sourceing our Genre information. Try searching an artist.";
+        displayErrorModalFnc(errorMessage);
 
+    }
 
 };
 
@@ -92,13 +102,13 @@ let callMusicApiFnc = function (){
             }
             else{
                 let errorMessage = "Error location: display fetch results";
-                displayErrorModal(errorMessage);
+                displayErrorModalFnc(errorMessage);
             }
             });
         })
         .catch (function (error) {
             let errorMessage = "Error location: fetch not possible";
-            displayErrorModal(errorMessage);
+            displayErrorModalFnc(errorMessage);
         });
         console.log("music API fetch is reading"); //used to confirm function is reading
 };
@@ -142,6 +152,7 @@ let displayArtistAlbumListFnc = function() {
 
                 //first column = album icon from font awesome.
                 mtd1.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+                mtd1.classList.add("pr-2");
                 // mtd1.innerHTML = '<i class="fa-solid fa-music"></i>'; //TODO: icon for tracks.
 
                 //TODO: add saved styling
@@ -165,6 +176,7 @@ let displayArtistAlbumListFnc = function() {
                 //font awesome picture icon
                 mtd3.innerHTML = '<i class="fa-solid fa-image"></i>';
                 mtd3.classList.add("cursor-pointer");
+                mtd3.classList.add("pr-2");
                 //add tooltip so when you hover it gives instructions 
                 mtd3.setAttribute("data-bs-toggle","tooltip");
                 mtd3.setAttribute("title", "Click to view album artwork.");
@@ -233,11 +245,21 @@ let saveAlbumFnc = function(){
     console.log("saveAlbumFnc is reading");
 };
 
+let displayErrorModalFnc = function(message){
+    let musicErrorModalEl = document.querySelector('#music-error-modal');
+    musicErrorModalEl.classList.remove("hidden");
+    $("#music-error-modal-text").text(message);
+};
+
+let closeErrorModalFnc = function(){
+    musicErrorModalEl.classList.add("hidden");
+};
 
 
 //Event listeners
 selectMusicBtnEl.addEventListener("click", openMusicModalFnc);
 closeMusicBtnEl.addEventListener("click", closeMusicModalFnc);
+closeErrorModalBtnEl.addEventListener("click", closeErrorModalFnc);
 musicSearchBtnEl.addEventListener("click", callMusicApiFnc);
 
 //temporary code for api functions.
