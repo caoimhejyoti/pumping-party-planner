@@ -1,5 +1,5 @@
 // TODO: remove all highlighted notes!
-// global variables
+// GLOBAL variables
 //API variables
 let apiSearchValue = "";
 let userSearchValue = "";
@@ -30,7 +30,7 @@ let closeMusicBtnEl = document.querySelector("#close-music-modal");
 var musicRadioEl = document.querySelector("#music-radio-buttons");
 // console.log(musicRadioEl); //used for debugging
 
-// WORKING! DESCRIPTION: Function - brings up music modal dialog TODO: add next function trigger
+// WORKING! DESCRIPTION: Function - brings up music modal dialog 
 let openMusicModalFnc = function(){
     musicModalEl.classList.remove('hidden');
     console.log("openMusicModalFnc is reading"); //used for debugging
@@ -45,13 +45,13 @@ let openMusicModalFnc = function(){
     
 };
 
-//WORKING! DESCRIPTION: function to close music modal 
+//COMPLETE! DESCRIPTION: function to close music modal 
 let closeMusicModalFnc = function () { 
     musicModalEl.classList.add('hidden');
     console.log("closeMusicModalFnc is reading"); //used for debugging
 };
 
-// DESCRIPTION: function to create API parameters based on user preferences
+//DESCRIPTION: function to create API parameters based on user preferences
 let userSelectionFnc = function () {
 
     let userRadioChoice = $("input[name='search-choice']:checked").val();
@@ -71,26 +71,24 @@ let userSelectionFnc = function () {
 
 };
 
-// DESCRIPTION: function calling API - using musicbrainz API
+//COMPLETE! DESCRIPTION: function calling API - using musicbrainz API
 let callMusicApiFnc = function (){
     userSearchValue = $("#artist-value").val(); //FIXME: multiple words need to be separated by a - not a space. 
-    console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging WORKING!    
+    // console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging    
     let musicApi = musicBaseApi + apiSearchValue + "/?query=" + apiSearchValue + ":" + userSearchValue + "&fmt=json";
-    console.log(musicApi); //used for debugging WORKING!
-    // let userAgent = "Pumping Party Planner/1.0.0 (https://caoimhejyoti.github.io/pumping-party-planner)";
-        
-    fetch(musicApi, {userAgent}) //WORKING!
+    // console.log(musicApi); //used for debugging
+            
+    fetch(musicApi, {userAgent})
         .then (function (response){
             response.json().then(function (data) {
                 console.log(data); //used for debugging 
             if (response.ok) {
                 let artistIdData = data.artists[0].id;
                 localStorage.setItem("artist_id", JSON.stringify(artistIdData));
-                console.log("from fetch - artistID: " + artistIdData); //used for debugging WORKING!
+                // console.log("from fetch - artistID: " + artistIdData); //used for debugging
                 artistId = JSON.parse(localStorage.getItem("artist_id"));
-                console.log("artistID from within fetch (post parsing): " + artistId); //used for debugging WORKING!
-
-                displayArtistTrackListFnc();
+                // console.log("artistID from within fetch (post parsing): " + artistId); //used for debugging 
+                displayArtistAlbumListFnc();
             }
             else{
                 let errorMessage = "Error location: display fetch results";
@@ -103,47 +101,33 @@ let callMusicApiFnc = function (){
             displayErrorModal(errorMessage);
         });
         console.log("music API fetch is reading"); //used to confirm function is reading
-        
-        // .then((response) => response.json())
-        // .then((data) => console.log(data)) //used to confirm API fetch request works.
-        //     if (response.ok){
 };
 
-
-
-let displayArtistTrackListFnc = function() {
-    console.log("inside displayArtistTrackListFnc" ); //WORKING! 
-    console.log("artistID from within displayArtistTrackListFnc: " + artistId); //WORKING! used for debugging
+//DESCRIPTION: function to display artist album - using musicbrainz API
+let displayArtistAlbumListFnc = function() {
+    // console.log("inside displayArtistAlbumListFnc" ); //used for debugging
+    // console.log("artistID from within displayArtistAlbumListFnc: " + artistId); //used for debugging
     let artistAlbumListApi = musicBaseApi + "release-group?" + apiSearchValue + "=" + artistId + "&type=album" + "&fmt=json";
-    // let artistTrackListApi = musicBaseApi + "release-group?" + apiSearchValue + "=" + artistId + "&type=single" + "&fmt=json";
-    // let artistTrackListApi = musicBaseApi + "release?track?" + apiSearchValue + "=" + artistId + "&fmt=json";
-    console.log(artistAlbumListApi); //used for debugging 
+    // console.log(artistAlbumListApi); //used for debugging 
 
     fetch(artistAlbumListApi, {userAgent})
-        // .then((response) => response.json())
-        // .then((data) => console.log(data)) //used to confirm API fetch request works.
         .then (function (response){
             response.json().then(function (data) {
-                console.log(data); //used for debugging 
+                console.log("album list [116]" + data); //used for debugging 
             if (response.ok) {
-                let releaseGroups = data["release-groups"]; //not able to read the release-groups?
-                console.log(releaseGroups);
+                let releaseGroups = data["release-groups"]; 
+                // console.log(releaseGroups); //used for debugging
                 let albumList = [];
                 for (var i = 0; i < releaseGroups.length; i++) {
                 albumList.push(releaseGroups[i].title);
-
-            }
-            console.log(albumList); // used for debugging
-            // let updatedAlbumList = [];
-            // updatedAlbumList = albumList;
+                }
+            // console.log(albumList); // used for debugging
             let albumListEl = document.createElement("p");
             let musicSearchResultsEl = document.querySelector("#music-search-results")
             musicSearchResultsEl.classList.remove('hidden');
-            console.log(albumList);
             albumListEl.textContent = albumList;
             let musicTableEl = document.createElement("table");
             for (var i = 0; i < albumList.length; i++) {
-
                 // creating table html for albums to be entred into 
                 let mtr = document.createElement("tr");
                 let mtd1 = document.createElement("td");
@@ -152,7 +136,8 @@ let displayArtistTrackListFnc = function() {
                 let mtd4 = document.createElement("td");
 
                 //first column = album icon from font awesome.
-                mtd1.innerHTML = '<i class="fas fa-album"></i>'; //FIXME: not displaying 
+                mtd1.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+                // mtd1.innerHTML = '<i class="fa-solid fa-music"></i>'; //TODO: icon for tracks.
 
                 //TODO: add saved styling
 
@@ -168,7 +153,8 @@ let displayArtistTrackListFnc = function() {
                 mtd2.setAttribute("title", "Click to see album tracks.");
 
                 //TODO: add saved styling
-                //TODO: add event listener to list tracks once album name is clicked
+                //Event listener to list tracks once album name is clicked TODO: create function!
+                mtd2.addEventListener("click", displayTracksFnc);
 
                 //third column = img icon from font awesome. User to click to display album artwork
                 //font awesome picture icon
@@ -179,7 +165,8 @@ let displayArtistTrackListFnc = function() {
                 mtd3.setAttribute("title", "Click to view album artwork.");
 
                 //TODO: add saved styling 
-                //TODO: add event listener to show album artwork
+                //Event listener to list tracks once album name is clicked TODO: create function!
+                mtd3.addEventListener("click", displayArtworkFnc);
 
                 //fourth column = save/tick icon from font awesome depending on whether album is saved.
                 //TODO: add saved styling [if function/else]
@@ -188,8 +175,9 @@ let displayArtistTrackListFnc = function() {
                 //add tooltip so when hover instructions are displayed
                 mtd4.setAttribute("data-bs-toggle","tooltip");
                 mtd4.setAttribute("title", "Click to save full album.");
-                //TODO: add event listener save album 
-                // mtd4.addEventListener("click", saveAlbum);
+
+                //Event listener to save album when save icon clicked TODO: create function!
+                mtd4.addEventListener("click", saveAlbumFnc);
 
                 //add all colums to each row
                 mtr.appendChild(mtd1);
@@ -198,11 +186,6 @@ let displayArtistTrackListFnc = function() {
                 mtr.appendChild(mtd4);
                 //add row to table
                 musicTableEl.appendChild(mtr);
-
-                // let albumResultsEl = document.createElement("p");
-                // albumResultsEl.classList.add("text-lg");
-                // albumResultsEl.textContent = albumList[i];
-                // musicSearchResultsEl.appendChild(albumResultsEl);
             }
             //create scrollable element around results
             musicSearchResultsEl.classList.add("h-full");
@@ -212,12 +195,28 @@ let displayArtistTrackListFnc = function() {
             musicSearchResultsEl.classList.add("max-w-full");
             //add table to search results
             musicSearchResultsEl.appendChild(musicTableEl);
-
             }
-        });
+            });
         })
-}
+};
 
+//DESCRIPTION: function to display selected album tracks - using musicbrainz API
+//TODO: create function!
+let displayTracksFnc = function(){
+console.log("displayTracksFnc is reading");
+};
+
+//DESCRIPTION: function to display artwork - using musicbrainz API
+//TODO: create function!
+let displayArtworkFnc = function(){
+    console.log("displayArtworkFnc is reading");
+};
+
+//DESCRIPTION: function to display artwork - using musicbrainz API
+//TODO: create function!
+let saveAlbumFnc = function(){
+    console.log("saveAlbumFnc is reading");
+};
 
 
 
@@ -226,6 +225,7 @@ selectMusicBtnEl.addEventListener("click", openMusicModalFnc);
 closeMusicBtnEl.addEventListener("click", closeMusicModalFnc);
 musicSearchBtnEl.addEventListener("click", callMusicApiFnc);
 
-
-
-// Access to fetch at 'https://api.deezer.com/artist/drake#access_token=frGsjr7kRQyN7XnSROHGZpqWPxulNpWLyjSg3wMBtMQYxKdiP7w&' from origin 'http://127.0.0.1:5502' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+//temporary code for api functions.
+// .then((response) => response.json())
+// .then((data) => console.log(data)) //used to confirm API fetch request works.
+//     if (response.ok){
