@@ -33,50 +33,47 @@ let closeErrorModalBtnEl = document.querySelector("#music-error-close-button");
 var musicRadioEl = document.querySelector("#music-radio-buttons");
 // console.log(musicRadioEl); //used for debugging
 
-// WORKING! DESCRIPTION: Function - brings up music modal dialog 
+// DESCRIPTION: Function - brings up music modal dialog 
 let openMusicModalFnc = function(){
     musicModalEl.classList.remove('hidden');
     console.log("openMusicModalFnc is reading"); //used for debugging
     musicRadioEl.addEventListener("click", userSelectionFnc);
     $('input[name="search-choice"]').attr('checked', false);
-    $('#genre-fieldset').addClass("hidden");
+    $('#genre-fields').addClass("hidden");
     $('#artist-fields').addClass("hidden");
     $('#artist-value').val(""); //clears search value
-    $('#user-genre').val(""); //clears search value
+    $('#genre-value').val(""); //clears search value
     $('#music-search-results').addClass("hidden");
     $('#music-search-results').val(""); //clears results 
     
 };
 
-//COMPLETE! DESCRIPTION: function to close music modal 
+//DESCRIPTION: function to close music modal //FIXME: need to remove the radio button values. 
 let closeMusicModalFnc = function () { 
     musicModalEl.classList.add('hidden');
     console.log("closeMusicModalFnc is reading"); //used for debugging
+    $('input[name="search-choice"]').attr('checked', false); //FIXME: need to remove the radio button values. 
 };
 
 //DESCRIPTION: function to create API parameters based on user preferences //FIXME: not reading error message!
 let userSelectionFnc = function () {
-
     let userRadioChoice = $("input[name='search-choice']:checked").val();
-
-    if  (typeof userRadioChoice == "undefined"){
-    console.log("help!");
-
+    
+    if (userRadioChoice == "artist"){
+        genreSearchEl.classList.add('hidden');
+        apiSearchValue = $("#artist-search").val();
+        artistSearchEl.classList.remove('hidden');
+    } 
+    else if (userRadioChoice == "genre"){
+        artistSearchEl.classList.add('hidden');
+        apiSearchValue = $("#genre-search").val();
+        genreSearchEl.classList.remove('hidden');
+    }
+    else if  (typeof userRadioChoice == "undefined"){
+        console.log("help!");
         musicErrorModalEl.classList.remove("hidden");
         $("#music-error-modal-text").text("Please select a search criteria");//FIXME: this is not being triggered.
         return;
-    }
-    if (userRadioChoice == "artist"){
-        // console.log("radioChoice - Artist"); //used for debugging
-        apiSearchValue = $("#artist-search").val();
-        // console.log(apiSearchValue); //used for debugging
-        artistSearchEl.classList.remove('hidden');
-
-    } 
-    else if (userRadioChoice == "genre"){
-        apiSearchValue = $("#genre-search").val();
-        genreSearchEl.classList.remove('hidden');
-
     }
 
 };
@@ -84,12 +81,19 @@ let userSelectionFnc = function () {
 //COMPLETE! DESCRIPTION: function calling API - using musicbrainz API
 let callMusicApiFnc = function (){
     userSearchValue = $("#artist-value").val() || $("#genre-value").val(); 
-    // console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging    
     let musicApi = musicBaseApi + apiSearchValue + "/?query=" + apiSearchValue + ":" + userSearchValue + "&fmt=json";
-    console.log(musicApi); //used for debugging
+    // console.log(musicApi); //used for debugging
             
     if (apiSearchValue == "genre"){
         let errorMessage = "We are still working on sourcing our Genre information. Try searching an artist.";
+        displayErrorModalFnc(errorMessage);        
+    }
+    else if (apiSearchValue == "artist" && userSearchValue == ""){
+        let errorMessage = "Please enter an " + apiSearchValue + "'s name.";
+        displayErrorModalFnc(errorMessage);        
+    }
+    else if (apiSearchValue == "genre" && userSearchValue == ""){
+        let errorMessage = "Please enter a " + apiSearchValue;
         displayErrorModalFnc(errorMessage);        
     }
     else {
@@ -126,6 +130,12 @@ let displayArtistAlbumListFnc = function() {
     let artistAlbumListApi = musicBaseApi + "release-group?" + apiSearchValue + "=" + artistId + "&type=album" + "&fmt=json";
     // console.log(artistAlbumListApi); //used for debugging 
 
+    //remove any dynamically created elements from previous searches.
+    removeAllPreviousChildren(musicSearchResultsEl);
+    //clear search value
+    $('#artist-value').val(""); 
+    $('#genre-value').val(""); 
+    
     fetch(artistAlbumListApi, {userAgent})
         .then (function (response){
             response.json().then(function (data) {
@@ -226,29 +236,31 @@ let displayArtistAlbumListFnc = function() {
 //DESCRIPTION: function to display selected album tracks - using musicbrainz API
 //TODO: create function!
 let displayTracksFnc = function(){
-console.log("displayTracksFnc is reading");
-let testAPI = "https://musicbrainz.org/ws/2/release-group/a73cecde-0923-40ad-aad1-e8c24ba6c3d2?inc=aliases%2Bartist-credits%2Breleases&fmt=json"
-fetch (testAPI)
-    .then((response) => response.json())
-    .then((data) => console.log(data)) //used to confirm API fetch request works.
+    let errorMessage = "We are still working on sourcing our track information. Please try again later!";
+    displayErrorModalFnc(errorMessage);
+
+    console.log("displayTracksFnc is reading"); //used to confirm function is reading
 };
 
-//DESCRIPTION: function to display artwork - using musicbrainz API
+//FIXME: DESCRIPTION: function to display artwork - using musicbrainz API
 //TODO: create function!
 let displayArtworkFnc = function(){
-    console.log("displayArtworkFnc is reading");
+    let errorMessage = "We are still working on sourcing our Album Artwork. Please try again later!";
+    displayErrorModalFnc(errorMessage);
 
-    
+    console.log("displayArtworkFnc is reading"); //used to confirm function is reading
+
+    // FIXME: practise code to be removed
     // fetch ("http://coverartarchive.org/release/f529b476-6e62-324f-b0aa-1f3e33d313fc")
-    fetch ("https://coverartarchive.org/release/"+window.albumId)
-    .then((response) => response.json())
-    .then((data) => console.log(data)) //used to confirm API fetch request works.    
+    // fetch ("https://coverartarchive.org/release/"+window.albumId)
+    // .then((response) => response.json())
+    // .then((data) => console.log(data)) //used to confirm API fetch request works.    
 };
 
 //DESCRIPTION: function to display artwork - using musicbrainz API
 //TODO: create function!
 let saveAlbumFnc = function(){
-    console.log("saveAlbumFnc is reading");
+    console.log("saveAlbumFnc is reading"); //used to confirm function is reading
 };
 
 let displayErrorModalFnc = function(message){
@@ -267,6 +279,12 @@ let displayRandomErrorModalFnc = function(){
     $("#music-error-modal-text").text("We are still working on Music Randomizer. Try searching an artist.");
 };
 
+
+function removeAllPreviousChildren(elem){
+    while (elem.lastElementChild) {
+        elem.removeChild(elem.lastElementChild);
+    }
+}
 //Event listeners
 selectMusicBtnEl.addEventListener("click", openMusicModalFnc);
 closeMusicBtnEl.addEventListener("click", closeMusicModalFnc);
