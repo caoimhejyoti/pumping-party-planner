@@ -74,8 +74,8 @@ let userSelectionFnc = function () {
 
     } 
     else if (userRadioChoice == "genre"){
-        let errorMessage = "We are still working on sourceing our Genre information. Try searching an artist.";
-        displayErrorModalFnc(errorMessage);
+        apiSearchValue = $("#genre-search").val();
+        genreSearchEl.classList.remove('hidden');
 
     }
 
@@ -83,34 +83,40 @@ let userSelectionFnc = function () {
 
 //COMPLETE! DESCRIPTION: function calling API - using musicbrainz API
 let callMusicApiFnc = function (){
-    userSearchValue = $("#artist-value").val(); //FIXME: multiple words need to be separated by a - not a space. 
+    userSearchValue = $("#artist-value").val() || $("#genre-value").val(); 
     // console.log("userSearchValue within callMusicApiFnc: " + userSearchValue); //used for debugging    
     let musicApi = musicBaseApi + apiSearchValue + "/?query=" + apiSearchValue + ":" + userSearchValue + "&fmt=json";
-    // console.log(musicApi); //used for debugging
+    console.log(musicApi); //used for debugging
             
-    fetch(musicApi, {userAgent})
-        .then (function (response){
-            response.json().then(function (data) {
-                console.log(data); //used for debugging 
-            if (response.ok) {
-                let artistIdData = data.artists[0].id;
-                localStorage.setItem("artist_id", JSON.stringify(artistIdData));
-                // console.log("from fetch - artistID: " + artistIdData); //used for debugging
-                artistId = JSON.parse(localStorage.getItem("artist_id"));
-                // console.log("artistID from within fetch (post parsing): " + artistId); //used for debugging 
-                displayArtistAlbumListFnc();
-            }
-            else{
-                let errorMessage = "Error location: display fetch results";
+    if (apiSearchValue == "genre"){
+        let errorMessage = "We are still working on sourcing our Genre information. Try searching an artist.";
+        displayErrorModalFnc(errorMessage);        
+    }
+    else {
+        fetch(musicApi, {userAgent})
+            .then (function (response){
+                response.json().then(function (data) {
+                    console.log(data); //used for debugging 
+                if (response.ok) {
+                    let artistIdData = data.artists[0].id;
+                    localStorage.setItem("artist_id", JSON.stringify(artistIdData));
+                    // console.log("from fetch - artistID: " + artistIdData); //used for debugging
+                    artistId = JSON.parse(localStorage.getItem("artist_id"));
+                    // console.log("artistID from within fetch (post parsing): " + artistId); //used for debugging 
+                    displayArtistAlbumListFnc();
+                }
+                else{
+                    let errorMessage = "Error location: display fetch results";
+                    displayErrorModalFnc(errorMessage);
+                }
+                });
+            })
+            .catch (function (error) {
+                let errorMessage = "Error location: fetch not possible";
                 displayErrorModalFnc(errorMessage);
-            }
             });
-        })
-        .catch (function (error) {
-            let errorMessage = "Error location: fetch not possible";
-            displayErrorModalFnc(errorMessage);
-        });
         console.log("music API fetch is reading"); //used to confirm function is reading
+    }
 };
 
 //DESCRIPTION: function to display artist album - using musicbrainz API
