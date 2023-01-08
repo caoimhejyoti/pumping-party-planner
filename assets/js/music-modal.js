@@ -255,12 +255,18 @@ let closeErrorModalFnc = function(){
     musicErrorModalEl.classList.add("hidden");
 };
 
+let displayRandomErrorModalFnc = function(){
+    let musicErrorModalEl = document.querySelector('#music-error-modal');
+    musicErrorModalEl.classList.remove("hidden");
+    $("#music-error-modal-text").text("We are still working on Music Randomizer. Try searching an artist.");
+};
 
 //Event listeners
 selectMusicBtnEl.addEventListener("click", openMusicModalFnc);
 closeMusicBtnEl.addEventListener("click", closeMusicModalFnc);
 closeErrorModalBtnEl.addEventListener("click", closeErrorModalFnc);
 musicSearchBtnEl.addEventListener("click", callMusicApiFnc);
+musicRandomBtnEl.addEventListener("click", displayRandomErrorModalFnc);
 
 //temporary code for api functions.
 // .then((response) => response.json())
