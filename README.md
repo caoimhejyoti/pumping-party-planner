@@ -20,10 +20,14 @@ Cocktails: https://www.thecocktaildb.com/api.php
 Music: https://developers.deezer.com/api
 
 ### Resources:
+<!-- Tailwind resources -->
 https://tailwindui.com/components/application-ui/overlays/modals
 https://tailwindui.com/components/application-ui/forms/select-menus
+https://nerdcave.com/tailwind-cheat-sheet
 <!-- used for resolving music API bugs -->
 https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+<!-- Font resources -->
+https://fontawesome.com/icons/compact-disc?s=solid&f=classic
 
