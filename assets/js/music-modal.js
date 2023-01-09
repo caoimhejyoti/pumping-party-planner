@@ -21,6 +21,7 @@ let musicImgEl = document.createElement("img");
 //local storage variables
 let musicAlreadySaved;
 let artistId = JSON.parse(localStorage.getItem("artist_id"));
+let storedMusic;
 
 //Button variables
 let selectMusicBtnEl = document.querySelector(".music-select");
@@ -170,12 +171,12 @@ let displayArtistAlbumListFnc = function() {
                         musicAlreadySaved = false;
 
                         //FIXME: causing bug - no data displayed. check if album already saved
-                        // if (storedMusic != null && storedMusic !== "") {
-                        //     arrayMusic = JSON.parse(storedMusic);
-                        //     if (arrayCocktails.filter(e => e.id === releaseGroups[i].title).length !== 0) {
-                        //         musicAlreadySaved = true;
-                        //     }
-                        // }
+                        if (storedMusic != null && storedMusic !== "") {
+                            arrayMusic = JSON.parse(storedMusic);
+                            if (arrayCocktails.filter(e => e.id === releaseGroups[i].title).length !== 0) {
+                                musicAlreadySaved = true;
+                            }
+                        }
 
                         // creating table html for albums to be entred into 
                         let mtr = document.createElement("tr");
@@ -188,6 +189,10 @@ let displayArtistAlbumListFnc = function() {
                         mtd1.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
                         mtd1.classList.add("pr-2");
                         // mtd1.innerHTML = '<i class="fa-solid fa-music"></i>'; //icon for tracks when Pumping Party Planner is developed.
+
+                        //gives icon API data
+                        mtd1.setAttribute("artist", artistName);
+                        mtd1.setAttribute("album-name", albumList[i]);
 
                         //style if previously saved - turn orange
                         if(musicAlreadySaved){
@@ -205,6 +210,9 @@ let displayArtistAlbumListFnc = function() {
                         mtd2.classList.add("pr-2");
                         mtd2.setAttribute("data-bs-toggle","tooltip");
                         mtd2.setAttribute("title", "Click to see album tracks.");
+                        //gives icon API data
+                        mtd2.setAttribute("artist", artistName);
+                        mtd2.setAttribute("album-name", albumList[i]);
 
                         //style if previously saved - turn orange
                         if(musicAlreadySaved){
@@ -304,36 +312,40 @@ let displayArtworkFnc = function(){
 //DESCRIPTION: function to display artwork - using musicbrainz API
 //TODO: create function!
 function saveAlbumFnc (event){
-    //determin album selected
+    //Ensure no further events are triggered
+    event.stopPropagation();
+    //Determin which album was selected
     let chosenAlbum = event.currentTarget;
-    console.log(chosenAlbum); //used for debugging
+    // console.log(chosenAlbum); //used for debugging
+    //Get album details
     let albumName = chosenAlbum.getAttribute("album-name");
-    console.log(albumName); //used for debugging
     let artist = chosenAlbum.getAttribute("artist");
-    console.log(artist); //used for debugging
+    let arrayMusic; 
+    //get previously user stored details
+    let storedMusic = localStorage.getItem("storedMusic"); 
+
     let currentMusic = {
         artist: artist,
         album: albumName
     };
-    //get previously user stored details
-    let storedMusic = localStorage.getItem("storedMusic"); 
-
+    // if first time storing, create blank array and add to array
     if(storedMusic == null){
         arrayMusic = [currentMusic];
     }
-    else{
+    else{ 
+        //when already stored.
         arrayMusic = JSON.parse(storedMusic);
+        console.log(arrayMusic);
         if (arrayMusic.filter(e => e.id === albumName).length === 0) {
-            arrayCocktails.push(currentMusic);
+            arrayMusic.push(currentMusic);
         }
     }
 
     //store to local storage
-    localStorage.setItem("music", JSON.stringify(arrayMusic));
+    localStorage.setItem("storedMusic", JSON.stringify(arrayMusic));
 
-    //turn saved music to orange to indicate item saved successfully
-    $(`mtd[data-id='${albumName}']`).addClass("dark-orange");
-
+    //trigger saved style to indicate item saved successfully
+    $(`mtd[album-name='${albumName}']`).addClass("dark-orange");
     chosenAlbum.innerHTML = "<i class='fa-solid fa-check'></i>";
 
     console.log("saveAlbumFnc is reading"); //used to confirm function is reading
