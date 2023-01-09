@@ -157,7 +157,9 @@ let displayArtistAlbumListFnc = function() {
                     for (var i = 0; i < releaseGroups.length; i++) {
                         albumList.push(releaseGroups[i].title);
                         albumId.push(releaseGroups[i]["primary-type-id"]); //used when working on album artwork developments
+                        console.log(releaseGroups[i].title);
                     }
+                    // console.log(album);
                     // console.log(albumList); // used for debugging
                     // console.log(albumId); // used for debugging
                     // console.log(albumId[0]); //used for debugging 
@@ -173,7 +175,8 @@ let displayArtistAlbumListFnc = function() {
                         //FIXME: causing bug - no data displayed. check if album already saved
                         if (storedMusic != null && storedMusic !== "") {
                             arrayMusic = JSON.parse(storedMusic);
-                            if (arrayCocktails.filter(e => e.id === releaseGroups[i].title).length !== 0) {
+                            console.log(arrayMusic.filter(e => e.album === releaseGroups[i].title));
+                            if (arrayMusic.filter(e => e.album === releaseGroups[i].title).length !== 0) {
                                 musicAlreadySaved = true;
                             }
                         }
@@ -217,6 +220,7 @@ let displayArtistAlbumListFnc = function() {
                         //style if previously saved - turn orange
                         if(musicAlreadySaved){
                             mtd2.classList.add("dark-orange");
+                            console.log("hello line 221");
                         }
 
                         //Event listener to list tracks once album name is clicked TODO: create function!
@@ -336,7 +340,7 @@ function saveAlbumFnc (event){
         //when already stored.
         arrayMusic = JSON.parse(storedMusic);
         console.log(arrayMusic);
-        if (arrayMusic.filter(e => e.id === albumName).length === 0) {
+        if (arrayMusic.filter(e => e.album === albumName).length === 0) {
             arrayMusic.push(currentMusic);
         }
     }
@@ -345,9 +349,9 @@ function saveAlbumFnc (event){
     localStorage.setItem("storedMusic", JSON.stringify(arrayMusic));
 
     //trigger saved style to indicate item saved successfully
-    $(`mtd[album-name='${albumName}']`).addClass("dark-orange");
+    $(`td[album-name='${albumName}']`).addClass("dark-orange");
+    // console.log(object);
     chosenAlbum.innerHTML = "<i class='fa-solid fa-check'></i>";
-
     console.log("saveAlbumFnc is reading"); //used to confirm function is reading
 };
 
