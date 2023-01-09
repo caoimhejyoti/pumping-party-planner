@@ -19,6 +19,7 @@ let musicImgContainerEl = document.querySelector("#music-image");
 let musicImgEl = document.createElement("img");
 
 //local storage variables
+let musicAlreadySaved;
 let artistId = JSON.parse(localStorage.getItem("artist_id"));
 
 //Button variables
@@ -108,10 +109,14 @@ let callMusicApiFnc = function (){
                     console.log(data); //used for debugging 
                 if (response.ok) {
                     let artistIdData = data.artists[0].id;
+                    let artistNameData = data.artists[0].name;
                     localStorage.setItem("artist_id", JSON.stringify(artistIdData));
                     // console.log("from fetch - artistID: " + artistIdData); //used for debugging
                     artistId = JSON.parse(localStorage.getItem("artist_id"));
                     // console.log("artistID from within fetch (post parsing): " + artistId); //used for debugging 
+                    localStorage.setItem("artist_name", JSON.stringify(artistNameData));
+                    artistName = JSON.parse(localStorage.getItem("artist_name"));
+                    console.log(artistName); //used for debugging
                     displayArtistAlbumListFnc();
                 }
                 else{
@@ -162,6 +167,16 @@ let displayArtistAlbumListFnc = function() {
                     albumListEl.textContent = albumList;
                     let musicTableEl = document.createElement("table");
                     for (var i = 0; i < albumList.length; i++) {
+                        musicAlreadySaved = false;
+
+                        //FIXME: causing bug - no data displayed. check if album already saved
+                        // if (storedMusic != null && storedMusic !== "") {
+                        //     arrayMusic = JSON.parse(storedMusic);
+                        //     if (arrayCocktails.filter(e => e.id === releaseGroups[i].title).length !== 0) {
+                        //         musicAlreadySaved = true;
+                        //     }
+                        // }
+
                         // creating table html for albums to be entred into 
                         let mtr = document.createElement("tr");
                         let mtd1 = document.createElement("td");
@@ -172,9 +187,12 @@ let displayArtistAlbumListFnc = function() {
                         //first column = album icon from font awesome.
                         mtd1.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
                         mtd1.classList.add("pr-2");
-                        // mtd1.innerHTML = '<i class="fa-solid fa-music"></i>'; //TODO: icon for tracks.
+                        // mtd1.innerHTML = '<i class="fa-solid fa-music"></i>'; //icon for tracks when Pumping Party Planner is developed.
 
-                        //TODO: add saved styling
+                        //style if previously saved - turn orange
+                        if(musicAlreadySaved){
+                            mtd1.classList.add("dark-orange");
+                        }
 
                         //second column = artist name 
                         mtd2.classList.add("text-lg");
@@ -188,7 +206,11 @@ let displayArtistAlbumListFnc = function() {
                         mtd2.setAttribute("data-bs-toggle","tooltip");
                         mtd2.setAttribute("title", "Click to see album tracks.");
 
-                        //TODO: add saved styling
+                        //style if previously saved - turn orange
+                        if(musicAlreadySaved){
+                            mtd2.classList.add("dark-orange");
+                        }
+
                         //Event listener to list tracks once album name is clicked TODO: create function!
                         mtd2.addEventListener("click", displayTracksFnc);
 
@@ -201,20 +223,32 @@ let displayArtistAlbumListFnc = function() {
                         mtd3.setAttribute("data-bs-toggle","tooltip");
                         mtd3.setAttribute("title", "Click to view album artwork.");
 
-                        //TODO: add saved styling 
-                        //Event listener to list tracks once album name is clicked TODO: create function!
+                        //style if previously saved - turn orange
+                        if(musicAlreadySaved){
+                            mtd3.classList.add("dark-orange");
+                        }
+
+                        //Event listener to list tracks once album name is clicked
                         mtd3.addEventListener("click", displayArtworkFnc);
 
                         //fourth column = save/tick icon from font awesome depending on whether album is saved.
-                        //TODO: add saved styling [if function/else]
+                        //style if previously saved - turn orange
+                        if(musicAlreadySaved){
+                            mtd4.innerHTML = '<i class="fa-solid fa-check"></i>';
+                            mtd4.classList.add("dark-orange");
+                        }
+                        else {
                         mtd4.innerHTML = '<i class="far fa-save"></i>';
                         mtd4.classList.add("cursor-pointer");
                         //add tooltip so when hover instructions are displayed
                         mtd4.setAttribute("data-bs-toggle","tooltip");
                         mtd4.setAttribute("title", "Click to save album name.");
-
+                        //gives icon API data
+                        mtd4.setAttribute("artist", artistName);
+                        mtd4.setAttribute("album-name", albumList[i]);
                         //Event listener to save album when save icon clicked TODO: create function!
                         mtd4.addEventListener("click", saveAlbumFnc);
+                        }
 
                         //add all colums to each row
                         mtr.appendChild(mtd1);
@@ -272,7 +306,35 @@ let displayArtworkFnc = function(){
 function saveAlbumFnc (event){
     //determin album selected
     let chosenAlbum = event.currentTarget;
-    console.log(chosenAlbum);
+    console.log(chosenAlbum); //used for debugging
+    let albumName = chosenAlbum.getAttribute("album-name");
+    console.log(albumName); //used for debugging
+    let artist = chosenAlbum.getAttribute("artist");
+    console.log(artist); //used for debugging
+    let currentMusic = {
+        artist: artist,
+        album: albumName
+    };
+    //get previously user stored details
+    let storedMusic = localStorage.getItem("storedMusic"); 
+
+    if(storedMusic == null){
+        arrayMusic = [currentMusic];
+    }
+    else{
+        arrayMusic = JSON.parse(storedMusic);
+        if (arrayMusic.filter(e => e.id === albumName).length === 0) {
+            arrayCocktails.push(currentMusic);
+        }
+    }
+
+    //store to local storage
+    localStorage.setItem("music", JSON.stringify(arrayMusic));
+
+    //turn saved music to orange to indicate item saved successfully
+    $(`mtd[data-id='${albumName}']`).addClass("dark-orange");
+
+    chosenAlbum.innerHTML = "<i class='fa-solid fa-check'></i>";
 
     console.log("saveAlbumFnc is reading"); //used to confirm function is reading
 };
