@@ -52,12 +52,12 @@ let openMusicModalFnc = function(){
     console.log("openMusicModalFnc is reading"); //used for debugging
 };
 
-//FIXME: need to remove the radio button values. DESCRIPTION: function to close music modal
+//DESCRIPTION: function to close music modal
 let closeMusicModalFnc = function () { 
     removeAllPreviousChildren(musicImgContainerEl);
     musicModalEl.classList.add('hidden');
     console.log("closeMusicModalFnc is reading"); //used for debugging
-    $("input[name='search-choice']:checked").val(); //FIXME: need to remove the radio button values. 
+    apiSearchValue = "";
 };
 
 //DESCRIPTION: function to create API parameters based on user preferences
@@ -77,7 +77,7 @@ let userSelectionFnc = function () {
         genreSearchEl.classList.remove('hidden');
     }
     else {
-        apiSearchValue = "undefined";      
+        apiSearchValue = "";      
         return;
     }
 };
