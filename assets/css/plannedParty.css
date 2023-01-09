@@ -93,12 +93,12 @@ h1 {
 
 .link {
   font-weight: 900;
-  font-size: 25px;
+  font-size: 40px;
   background: white;
   border-radius: 5px;
   padding: 10px 20px;
   position: absolute;
-  top: 25px;
+  bottom: 25px;
   left: 25px;
 }
 
@@ -107,8 +107,19 @@ h1 {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    max-height: 95%;
+    max-height: 90%;
     overflow-y: scroll;
+}
+
+.musicList {
+  max-height: 90%;
+  overflow-y: scroll;
+}
+
+.musicList li {
+  padding: 4px;
+  font-weight: 400;
+  max-width: 100%;
 }
 
 .cocktailList li {

@@ -2,9 +2,7 @@ let cocktailUl = document.querySelector(".cocktailList");
 let musicUl = document.querySelector(".musicList");
 
 let cocktailList = JSON.parse(localStorage.getItem("cocktails"));
-let musicList = JSON.parse(localStorage.getItem("music"));
-
-console.log(cocktailList);
+let musicList = JSON.parse(localStorage.getItem("storedMusic"));
 
 function loadCocktails() {
     for(let el in cocktailList) {
@@ -18,7 +16,6 @@ function loadCocktails() {
         liEl.textContent = currentEl.name;
         imgEl.src = currentEl.img;
         let ingredientsList = currentEl.ingredients.split("#");
-        console.log(ingredientsList.length);
         for(let lineEl in ingredientsList) {
             let pInnerEl = document.createElement('p');
             pInnerEl.textContent = ingredientsList[lineEl];
@@ -36,18 +33,17 @@ function loadMusic() {
     for(let el in musicList) {
         let liEl = document.createElement("li");
         musicUl.appendChild(liEl);
-        liEl.textContent = musicList[el].name;
+        liEl.textContent = `${musicList[el].artist} : ${musicList[el].album}`;
     }
+    console.log(musicList);
 }
 
 function switchDetails(e) {
-    console.log("this is working ");
     let cocktailTarget = e.target;
     let cocktailIndex = cocktailTarget.classList[0];
     let showIng = document.querySelector(`p._${cocktailIndex}`);
     if(showIng.classList[0] == "hidden" || showIng.classList[1] == "hidden") {
         showIng.classList.remove("hidden");
-        console.log("im working");
     } else showIng.classList.add("hidden");
 }
 
