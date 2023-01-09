@@ -16,6 +16,11 @@ img {
     margin: auto;
 }
 
+.modalContainer {
+    min-height: 75%;
+    min-width: 75%;
+}
+
 .border-gradient {
     min-width: 20%;
     max-width: 300px;
