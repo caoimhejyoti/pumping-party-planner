@@ -61,7 +61,7 @@ let closeMusicModalFnc = function () {
     $("input[name='search-choice']:checked").val(); //FIXME: need to remove the radio button values. 
 };
 
-//FIXME: not reading error message! DESCRIPTION: function to create API parameters based on user preferences
+//DESCRIPTION: function to create API parameters based on user preferences
 let userSelectionFnc = function () {
     userRadioChoice = $("input[name='search-choice']:checked").val();
     // console.log(userRadioChoice);
@@ -78,15 +78,12 @@ let userSelectionFnc = function () {
         genreSearchEl.classList.remove('hidden');
     }
     else {
-        apiSearchValue = "undefined";
-        console.log("help!");
-        // musicErrorModalEl.classList.remove("hidden");
-        // $("#music-error-modal-text").text("Please select a search criteria");//FIXME: this is not being triggered.
+        apiSearchValue = "undefined";      
         return;
     }
 };
 
-//COMPLETE! DESCRIPTION: function calling API - using musicbrainz API
+//DESCRIPTION: function calling API - using musicbrainz API
 let callMusicApiFnc = function (){
     userSearchValue = $("#artist-value").val() || $("#genre-value").val(); 
     let musicApi = musicBaseApi + apiSearchValue + "/?query=" + apiSearchValue + ":" + userSearchValue + "&fmt=json";
@@ -139,7 +136,7 @@ let callMusicApiFnc = function (){
     }
 };
 
-//FIXME: Add Saved Styling DESCRIPTION: function to display artist album - using musicbrainz API
+//FIXME: causing bug - no data displayed. check if album already saved DESCRIPTION: function to display artist album - using musicbrainz API
 let displayArtistAlbumListFnc = function() {
     let artistAlbumListApi = musicBaseApi + "release-group?" + apiSearchValue + "=" + artistId + "&type=album" + "&fmt=json";
     // console.log(artistAlbumListApi); //used for debugging 
@@ -228,7 +225,7 @@ let displayArtistAlbumListFnc = function() {
                             console.log("hello line 221");
                         }
 
-                        //Event listener to list tracks once album name is clicked TODO: create function!
+                        //Event listener to list tracks once album name is clicked - for future developments
                         mtd2.addEventListener("click", displayTracksFnc);
 
                         //third column = img icon from font awesome. User to click to display album artwork
@@ -263,7 +260,7 @@ let displayArtistAlbumListFnc = function() {
                         //gives icon API data
                         mtd4.setAttribute("artist", artistName);
                         mtd4.setAttribute("album-name", albumList[i]);
-                        //Event listener to save album when save icon clicked TODO: create function!
+                        //Event listener to save album when save icon clicked 
                         mtd4.addEventListener("click", saveAlbumFnc);
                         }
 
@@ -288,7 +285,7 @@ let displayArtistAlbumListFnc = function() {
         })
 };
 
-//COMPLETE! DESCRIPTION: function to display selected album tracks - using musicbrainz API
+//DESCRIPTION: function to display selected album tracks - using musicbrainz API
 let displayTracksFnc = function(){
     let errorMessage = "We are still working on sourcing our track information. Please try again later!";
     displayErrorModalFnc(errorMessage);
@@ -296,30 +293,29 @@ let displayTracksFnc = function(){
     console.log("displayTracksFnc is reading"); //used to confirm function is reading
 };
 
-//FIXME: Img size is huge! DESCRIPTION: function to display artwork - using musicbrainz API
+//DESCRIPTION: function to display artwork - using musicbrainz API
 let displayArtworkFnc = function(){
 
-    musicImgEl.src = "assets/imgs/blank-img.png";
-    musicImgEl.classList.add('rounded-b-2xl');
+    // Artwork development code:
+    // musicImgEl.src = "assets/imgs/blank-img.png";
+    // musicImgEl.classList.add('rounded-b-2xl');
 
-    musicImgContainerEl.appendChild(musicImgEl);
-    musicImgContainerEl.classList.add('mx-auto');
-    musicImgContainerEl.classList.add('my-auto');
-    musicImgContainerEl.classList.add('cocktail-border');
-    musicImgContainerEl.classList.add('p-0');
-    musicImgContainerEl.classList.add('ml-2');
-    musicImgContainerEl.classList.remove('hidden');
+    // musicImgContainerEl.appendChild(musicImgEl);
+    // musicImgContainerEl.classList.add('mx-auto');
+    // musicImgContainerEl.classList.add('my-auto');
+    // musicImgContainerEl.classList.add('cocktail-border');
+    // musicImgContainerEl.classList.add('p-0');
+    // musicImgContainerEl.classList.add('ml-2');
+    // musicImgContainerEl.classList.remove('hidden');
 
-
-    // let errorMessage = "We are still working on sourcing our Album Artwork. Please try again later!";
-    // displayErrorModalFnc(errorMessage);
+    let errorMessage = "We are still working on sourcing our Album Artwork. Please try again later!";
+    displayErrorModalFnc(errorMessage);
 
     console.log("displayArtworkFnc is reading"); //used to confirm function is reading
 
 };
 
 //DESCRIPTION: function to display artwork - using musicbrainz API
-//TODO: create function!
 function saveAlbumFnc (event){
     //Ensure no further events are triggered
     event.stopPropagation();
@@ -360,26 +356,26 @@ function saveAlbumFnc (event){
     console.log("saveAlbumFnc is reading"); //used to confirm function is reading
 };
 
-//COMPLETE! DESCRIPTION: function to display error modal - called in various functions
+//DESCRIPTION: function to display error modal - called in various functions
 let displayErrorModalFnc = function(message){
     let musicErrorModalEl = document.querySelector('#music-error-modal');
     musicErrorModalEl.classList.remove("hidden");
     $("#music-error-modal-text").text(message);
 };
 
-//COMPLETE! DESCRIPTION: function to close error modal
+//DESCRIPTION: function to close error modal
 let closeErrorModalFnc = function(){
     musicErrorModalEl.classList.add("hidden");
 };
 
-//COMPLETE! DESCRIPTION: function to display error modal for randomize button.
+//DESCRIPTION: function to display error modal for randomize button.
 let displayRandomErrorModalFnc = function(){
     let musicErrorModalEl = document.querySelector('#music-error-modal');
     musicErrorModalEl.classList.remove("hidden");
     $("#music-error-modal-text").text("We are still working on Music Randomizer. Try searching an artist.");
 };
 
-//COMPLETE! DESCRIPTION: function to remove previously created children through searches.
+//DESCRIPTION: function to remove previously created children through searches.
 function removeAllPreviousChildren(elem){
     while (elem.lastElementChild) {
         elem.removeChild(elem.lastElementChild);
@@ -392,8 +388,3 @@ closeMusicBtnEl.addEventListener("click", closeMusicModalFnc);
 closeErrorModalBtnEl.addEventListener("click", closeErrorModalFnc);
 musicSearchBtnEl.addEventListener("click", callMusicApiFnc);
 musicRandomBtnEl.addEventListener("click", displayRandomErrorModalFnc);
-
-//temporary code for api functions.
-// .then((response) => response.json())
-// .then((data) => console.log(data)) //used to confirm API fetch request works.
-//     if (response.ok){
