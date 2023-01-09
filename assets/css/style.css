@@ -1,6 +1,7 @@
 .card {
-    display: block;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     min-width: 100%;
     min-height: 90%;
     padding: 2rem;
@@ -12,8 +13,10 @@
 
 }
 
-img {
+.cardimg {
     margin: auto;
+    margin-top: 0;
+    width: 70%;
 }
 
 .modalContainer {
@@ -174,12 +177,12 @@ h1 {
 
 .link {
     font-weight: 900;
-    font-size: 25px;
+    font-size: 40px;
     background: white;
     border-radius: 5px;
     padding: 10px 20px;
     position: absolute;
-    top: 25px;
+    bottom: 25px;
     left: 25px;
 }
 
