@@ -14,7 +14,7 @@ h1 {
 .card {
     min-width: 100%;
     min-height: 90%;
-    padding: 1rem;
+    padding: 2rem;
     background: white;
 }
 .border-gradient {
@@ -91,17 +91,28 @@ h1 {
     }
 }
 
+.link {
+  font-weight: 900;
+  font-size: 25px;
+  background: white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+}
+
 .cocktailList {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    max-height: 70%;
+    max-height: 95%;
     overflow-y: scroll;
 }
 
 .cocktailList li {
-    width: 50%;
+    width: 70%;
 }
 .cocktailList img {
     padding: 2px;
