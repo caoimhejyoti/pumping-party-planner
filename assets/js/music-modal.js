@@ -64,7 +64,7 @@ let closeMusicModalFnc = function () {
 //FIXME: not reading error message! DESCRIPTION: function to create API parameters based on user preferences
 let userSelectionFnc = function () {
     userRadioChoice = $("input[name='search-choice']:checked").val();
-    
+    // console.log(userRadioChoice);
     if (userRadioChoice == "artist"){
         musicSearchResultsEl.classList.add('hidden');
         genreSearchEl.classList.add('hidden');
@@ -77,10 +77,11 @@ let userSelectionFnc = function () {
         apiSearchValue = $("#genre-search").val();
         genreSearchEl.classList.remove('hidden');
     }
-    else if  (typeof userRadioChoice == "undefined"){
+    else {
+        apiSearchValue = "undefined";
         console.log("help!");
-        musicErrorModalEl.classList.remove("hidden");
-        $("#music-error-modal-text").text("Please select a search criteria");//FIXME: this is not being triggered.
+        // musicErrorModalEl.classList.remove("hidden");
+        // $("#music-error-modal-text").text("Please select a search criteria");//FIXME: this is not being triggered.
         return;
     }
 };
@@ -89,9 +90,13 @@ let userSelectionFnc = function () {
 let callMusicApiFnc = function (){
     userSearchValue = $("#artist-value").val() || $("#genre-value").val(); 
     let musicApi = musicBaseApi + apiSearchValue + "/?query=" + apiSearchValue + ":" + userSearchValue + "&fmt=json";
-    // console.log(musicApi); //used for debugging
-            
-    if (apiSearchValue == "genre"){
+    console.log(musicApi); //used for debugging
+    console.log(apiSearchValue); //used for debugging
+    if (apiSearchValue == ""){
+        let errorMessage = "Please select a search criteria";
+        displayErrorModalFnc(errorMessage);        
+    }
+    else if (apiSearchValue == "genre"){
         let errorMessage = "We are still working on sourcing our Genre information. Try searching an artist.";
         displayErrorModalFnc(errorMessage);        
     }
