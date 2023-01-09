@@ -35,7 +35,6 @@ let closeMusicBtnEl = document.querySelector("#close-music-modal");
 let closeErrorModalBtnEl = document.querySelector("#music-error-close-button"); 
 // console.log(closeMusicBtnEl); //used for debugging
 var musicRadioEl = document.querySelector("#music-radio-buttons");
-// console.log(musicRadioEl); //used for debugging
 
 // DESCRIPTION: Function - brings up music modal dialog 
 let openMusicModalFnc = function(){
