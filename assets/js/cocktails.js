@@ -132,6 +132,7 @@ function displayData(data){
         pEl.classList.add("block");
         pEl.classList.add("w-full");
         pEl.setAttribute("id", "search-count");
+        pEl.classList.add("text-center");
     }
     //set value of search count to display the number of cocktails returned from the search
     pEl.innerHTML = "Search Results - " + data.drinks.length + " cocktail(s) found";
@@ -160,7 +161,7 @@ function displayData(data){
         strIngredients = getAllIngredients(data.drinks[i]).join("#");
 
         //1st column in table - font awesome cocktail icon 
-        td1.innerHTML ='<i class="fas fa-cocktail"></i>';
+        td1.innerHTML ='<i class="fas fa-cocktail" aria-hidden="true"></i>';
 
         //add data-set so these can be used if needed when icon is clicked
         if (strIngredients.length > 0) {
@@ -201,7 +202,7 @@ function displayData(data){
         td2.addEventListener("click", getIngredients);
         //3rd column in table - holds icon which when clicked opens cocktail image
         //font awesome picture icon
-       td3.innerHTML = '<i class="fa-solid fa-image"></i>';
+       td3.innerHTML = '<i class="fa-solid fa-image" aria-hidden="true"></i><span class="sr-only">Image</span>';
        td3.classList.add("cursor-pointer");
        //add tooltip so when you hover it gives instructions 
         td3.setAttribute("data-bs-toggle","tooltip");
@@ -226,11 +227,11 @@ function displayData(data){
         //4th column in table - hold save icon or tick icon
         if (blAlreadySaved) {
             //if cocktail saved display tick and colour orange
-            td4.innerHTML = '<i class="fa-solid fa-check"></i>';
+            td4.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
             td4.classList.add("dark-orange");  
         } else {
             //otherwise dsplay "save" icon
-            td4.innerHTML = '<i class="far fa-save"></i>';
+            td4.innerHTML = '<i class="far fa-save" aria-hidden="true"></i><span class="sr-only">Save</span>';
             td4.classList.add("cursor-pointer");
             //add tooltip so when hover instructions are displayed
             td4.setAttribute("data-bs-toggle","tooltip");
@@ -573,7 +574,7 @@ function saveCocktail(event) {
         //turn saved cocktail orange to indicate saved
         $(`td[data-id='${cocktailID}']`).addClass("dark-orange");  
         //change icon to indicate saved cocktail    
-        chosenDrink.innerHTML = "<i class='fa-solid fa-check'></i>";
+        chosenDrink.innerHTML = "<i class='fa-solid fa-check' aria-hidden='true'></i>";
     } else {
         //we dont already have the ingredients - need to make new API call to get them
         let requestUrl = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${searchCriteria}`;
@@ -611,7 +612,7 @@ function saveCocktail(event) {
             //turn orange to indicate saved
             $(`td[data-id='${cocktailID}']`).addClass("dark-orange"); 
             //change icon to tick - indiate saved  
-            chosenDrink.innerHTML = "<i class='fa-solid fa-check'></i>";
+            chosenDrink.innerHTML = "<i class='fa-solid fa-check' aria-hidden='true'></i>";
        })
         .catch(function(error){
             displayError("Error saving cocktails details, please try again.");
