@@ -221,7 +221,6 @@ let displayArtistAlbumListFnc = function() {
                         //style if previously saved - turn orange
                         if(musicAlreadySaved){
                             mtd2.classList.add("dark-orange");
-                            console.log("hello line 221");
                         }
 
                         //Event listener to list tracks once album name is clicked - for future developments
@@ -235,6 +234,7 @@ let displayArtistAlbumListFnc = function() {
                         //add tooltip so when you hover it gives instructions 
                         mtd3.setAttribute("data-bs-toggle","tooltip");
                         mtd3.setAttribute("title", "Click to view album artwork.");
+                        mtd3.setAttribute("album-name", albumList[i]);
 
                         //style if previously saved - turn orange
                         if(musicAlreadySaved){
@@ -350,8 +350,8 @@ function saveAlbumFnc (event){
 
     //trigger saved style to indicate item saved successfully
     $(`td[album-name='${albumName}']`).addClass("dark-orange");
-    // console.log(object);
     chosenAlbum.innerHTML = "<i class='fa-solid fa-check'></i>";
+
     console.log("saveAlbumFnc is reading"); //used to confirm function is reading
 };
 
